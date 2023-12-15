@@ -4,19 +4,19 @@ This repository contains a WDL-based workflow for variant calling and annotation
 
 ## Workflow Steps
 
-1. **Alignment**: The HiFi reads are aligned to a reference genome using `pbmm2`. The output is a BAM file that contains the alignments.
+- **Alignment**: The HiFi reads are aligned to a reference genome using `pbmm2`. The output is a BAM file that contains the alignments.
 
-2. **Variant Calling**: Variants are called from the alignments using `DeepVariant`. The output is a VCF file that contains the called variants.
+- **Variant Calling**: Variants are called from the alignments using `DeepVariant`. The output is a VCF file that contains the called variants.
 
-3. **VCF Filtering**: The variants in the VCF file are filtered using `bcftools -f PASS` to include only variants that have passed all filters.
+- **VCF Filtering**: The variants in the VCF file are filtered using `bcftools -f PASS` to include only variants that have passed all filters.
 
-4. **VCF Normalization**: The called variants are normalized using `bcftools norm`. This step ensures that all variants are represented in a standard way.
+- **VCF Normalization**: The called variants are normalized using `bcftools norm`. This step ensures that all variants are represented in a standard way.
 
-5. **Variant Phasing**: The "PASS" variants are phased using `whatshap phase`. The phasing is encoded in the "FORMAT" column of the VCF.
+- **Variant Phasing**: The "PASS" variants are phased using `whatshap phase`. The phasing is encoded in the "FORMAT" column of the VCF.
 
-6. **Variant Annotation**: The "PASS" variants are annotated using `VEP` tool. The output is a VCF file that contains all the additional annotation in the "INFO" column.
+- **Variant Annotation**: The "PASS" variants are annotated using `VEP` tool. The output is a VCF file that contains all the additional annotation in the "INFO" column.
 
-7. **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF file that contains the called structural variants.
+- **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF file that contains the called structural variants.
 
 ## Inputs
 
