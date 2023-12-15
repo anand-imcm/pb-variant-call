@@ -5,6 +5,7 @@ import "./tasks/call_structural_variants.wdl" as svcall
 import "./tasks/call_variants.wdl" as varcall
 import "./tasks/annotate_variants.wdl" as annotate
 import "./tasks/phase_variants.wdl" as phase
+import "./tasks/ontarget_variants.wdl" as subset
 
 workflow main {
 
@@ -16,6 +17,7 @@ workflow main {
         File genome_ref
         File genome_index_pbmm
         File vep_cache
+        File target_bed
     }
 
     parameter_meta {
@@ -24,6 +26,7 @@ workflow main {
         genome_ref : "Human reference genome .fasta file."
         genome_index_pbmm : "Reference index generated through pbmm2 in .mmi format."
         vep_cache : "VEP cache in .zip format. (Source: https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache)"
+        target_bed : "Coordinates for the amplified regions (target) in .bed format."
     }
 
     call align.AlignHifiReads {
@@ -46,6 +49,10 @@ workflow main {
         input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
     }
 
+    call subset.OntargetVariants {
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated, bed = target_bed, file_label = prefix
+    }
+
     output {
         File raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam
         File raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index
@@ -64,6 +71,8 @@ workflow main {
 
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated_vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats
+
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vcf = OntargetVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants
     }
 
     meta {

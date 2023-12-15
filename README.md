@@ -27,6 +27,7 @@ The main inputs to the workflow are:
 - `genome_ref` : Human reference genome .fasta file.
 - `genome_index_pbmm` : Reference index generated through pbmm2 in .mmi format.
 - `vep_cache` : VEP cache in .zip format. This cache is required for the `VEP` tool to function. You can download the cache from [Ensembl's website](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache).
+- `target_bed` : "Coordinates for the amplified regions (target) in .bed format."
 
 ## Outputs
 
@@ -44,5 +45,6 @@ The main outputs from the workflow are:
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_stats`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated_vcf`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`
+- `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vcf`
 
 
