@@ -1,1 +1,4 @@
 notes-comments.txt
+data/
+cromwell-workflow-logs/
+cromwell-executions/
