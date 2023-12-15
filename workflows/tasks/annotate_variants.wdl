@@ -34,8 +34,8 @@ task AnnotateVariants {
     >>>
 
     output {
-        File raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated = file_label + "raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated.vcf"
-        File raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats = file_label + "raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats.txt"
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated = file_label + "raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated.vcf"
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = file_label + "raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats.txt"
     }
 
     runtime {
