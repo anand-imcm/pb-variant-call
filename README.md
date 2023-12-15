@@ -54,11 +54,11 @@ The main outputs from the workflow are:
 
 ## Components
 
-- Python packages
+- **Python packages**
   - matplotlib
   - numpy
   - argparse
-- Tools
+- **Tools**
   - pbmm2
   - seqkit
   - samtools
@@ -66,7 +66,7 @@ The main outputs from the workflow are:
   - bcftools
   - bedtools
   - whatshap
-- Containers
+- **Containers**
   - ghcr.io/anand-imcm/wf-pb-amp
   - google/deepvariant
   - ensemblorg/ensembl-vep
