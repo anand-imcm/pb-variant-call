@@ -29,11 +29,18 @@ task CallVariantsDV {
             --ref genome_reference.fasta \
             --reads ~{file_label}_raw_hifi_to_reference_alignment.bam \
             --output_vcf  ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz
+
+        # bcftools filter PASS variants
+        bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz
+        # bcftools norm and split bialleleic sites
+        bcftools norm ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz -f genome_reference.fasta -m -any -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants.vcf.gz
     >>>
 
     output {
         File raw_hifi_to_reference_alignment_all_variants_vcf = file_label + "_raw_hifi_to_reference_alignment_all_variants.vcf.gz"
         File raw_hifi_to_reference_alignment_all_variants_stats = file_label + "_raw_hifi_to_reference_alignment_all_variants.visual_report.html"
+        File raw_hifi_to_reference_alignment_PASS_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz"
+        File raw_hifi_to_reference_alignment_PASS_norm_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_variants.vcf.gz"
     }
 
     runtime {
