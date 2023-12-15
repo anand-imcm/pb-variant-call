@@ -1,7 +1,7 @@
 version 1.0
 
 # call variants using Google deep variant
-task CallVariantsDV {
+task CallVariants {
     
     input {
         File raw_hifi_to_reference_alignment_bam

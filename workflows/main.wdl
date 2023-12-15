@@ -3,6 +3,7 @@ version 1.0
 import "./tasks/align_hifi.wdl" as align
 import "./tasks/call_variants.wdl" as varcall
 import "./tasks/annotate_variants.wdl" as annotate
+import "./tasks/phase_variants.wdl" as phase
 
 workflow main {
 
@@ -28,12 +29,16 @@ workflow main {
         input: hifi_reads_fastq_gz = reads_fastq_gz, pbmm2_index = genome_index_pbmm, file_label = prefix
     }
 
-    call varcall.CallVariantsDV {
+    call varcall.CallVariants {
         input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix
     }
+
+    call phase.PhaseVariants {
+        input: vcf = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants, bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, bam_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix
+    }
     
-    call annotate.AnnotateVariantsVEP {
-        input: variants_vcf = CallVariantsDV.raw_hifi_to_reference_alignment_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
+    call annotate.AnnotateVariants {
+        input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
     }
 
     output {
@@ -42,13 +47,16 @@ workflow main {
         File raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log
         File raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats
 
-        File raw_hifi_to_reference_alignment_all_variants_vcf = CallVariantsDV.raw_hifi_to_reference_alignment_all_variants_vcf
-        File raw_hifi_to_reference_alignment_all_variants_stats = CallVariantsDV.raw_hifi_to_reference_alignment_all_variants_stats
-        File raw_hifi_to_reference_alignment_PASS_variants = CallVariantsDV.raw_hifi_to_reference_alignment_PASS_variants
-        File raw_hifi_to_reference_alignment_PASS_norm_variants = CallVariantsDV.raw_hifi_to_reference_alignment_PASS_norm_variants
+        File raw_hifi_to_reference_alignment_all_variants_vcf = CallVariants.raw_hifi_to_reference_alignment_all_variants_vcf
+        File raw_hifi_to_reference_alignment_all_variants_stats = CallVariants.raw_hifi_to_reference_alignment_all_variants_stats
+        File raw_hifi_to_reference_alignment_PASS_variants = CallVariants.raw_hifi_to_reference_alignment_PASS_variants
+        File raw_hifi_to_reference_alignment_PASS_norm_variants = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants
 
-        File raw_hifi_to_reference_alignment_all_variants_vep = AnnotateVariantsVEP.raw_hifi_to_reference_alignment_all_variants_vep
-        File raw_hifi_to_reference_alignment_all_variants_vep_stats = AnnotateVariantsVEP.raw_hifi_to_reference_alignment_all_variants_vep_stats
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_stats = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_stats
+
+        File raw_hifi_to_reference_alignment_all_variants_vep = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated
+        File raw_hifi_to_reference_alignment_all_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats
     }
 
     meta {
