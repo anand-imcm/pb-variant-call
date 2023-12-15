@@ -52,7 +52,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log
         File raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats
 
-        File raw_hifi_to_reference_alignment_structural_variants = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_variants
+        File raw_hifi_to_reference_alignment_structural_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_variants
 
         File raw_hifi_to_reference_alignment_all_variants_vcf = CallVariants.raw_hifi_to_reference_alignment_all_variants_vcf
         File raw_hifi_to_reference_alignment_all_variants_stats = CallVariants.raw_hifi_to_reference_alignment_all_variants_stats
