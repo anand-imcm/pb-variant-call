@@ -1,6 +1,5 @@
 version 1.0
 
-# align clustered hifi reads to reference and generate the final bam using pbaa bampaint
 task AlignHifiReads {
     
     input {
@@ -30,7 +29,7 @@ task AlignHifiReads {
         
         seqkit stats -a -T ~{file_label}.hifi_reads.fastq > ~{file_label}_raw_hifi_reads_fastq_stats.tab
         
-        samtools depth ~{file_label}_raw_hifi_to_reference_alignment.bam -o ~{file_label}_raw_hifi_to_reference_alignment.depth.txt
+        samtools depth ~{file_label}_raw_hifi_to_reference_alignment.bam -o ~{file_label}_raw_hifi_to_reference_alignment_depth.txt
 
     >>>
 
@@ -39,6 +38,7 @@ task AlignHifiReads {
         File raw_hifi_to_reference_alignment_index = file_label + "_raw_hifi_to_reference_alignment.bam.bai"
         File raw_hifi_to_reference_alignment_log = file_label + "_raw_hifi_to_reference_alignment.log"
         File raw_hifi_reads_fastq_stats = file_label + "_raw_hifi_reads_fastq_stats.tab"
+        File raw_hifi_to_reference_alignment_depth = file_label + "_raw_hifi_to_reference_alignment_depth.txt"
     }
 
 }

@@ -16,7 +16,10 @@ This repository contains a WDL-based workflow for variant calling and annotation
 
 - **Variant Annotation**: The "PASS" variants are annotated using `VEP` tool. The output is a VCF file that contains all the additional annotation in the "INFO" column.
 
-- **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF file that contains the called structural variants.
+- **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF 
+file that contains the called structural variants.
+
+- **Summary**: Custom scripts are used to generate coverage depth plot and a summary report.
 
 ## Inputs
 
@@ -46,5 +49,24 @@ The main outputs from the workflow are:
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated_vcf`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vcf`
+- `coverage_depth_plot`
 
 
+## Components
+
+- Python packages
+  - matplotlib
+  - numpy
+  - argparse
+- Tools
+  - pbmm2
+  - seqkit
+  - samtools
+  - pbsv
+  - bcftools
+  - bedtools
+  - whatshap
+- Containers
+  - ghcr.io/anand-imcm/wf-pb-amp
+  - google/deepvariant
+  - ensemblorg/ensembl-vep

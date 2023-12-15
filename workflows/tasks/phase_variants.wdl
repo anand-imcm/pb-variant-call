@@ -1,6 +1,5 @@
 version 1.0
 
-# call variants using Google deep variant
 task PhaseVariants {
     
     input {
