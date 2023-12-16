@@ -38,4 +38,10 @@ task PhaseVariants {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf"
         File raw_hifi_to_reference_alignment_PASS_norm_phased_stats = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt"
     }
+
+    runtime {
+        docker: "pbvarcall:latest"
+        memory: "32G"
+        disks: "local-disk 40 HDD"
+    }
 }

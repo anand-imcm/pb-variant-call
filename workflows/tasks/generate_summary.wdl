@@ -33,12 +33,12 @@ task Summary {
         modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
         sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv
 
-        python /home/anand/Documents/aspire-files/data-oxford/terra.bio/pb-variant-call/scripts/plot_bam_coverage.py \
+        python /scripts/plot_bam_coverage.py \
             -d ~{depth} \
             -t ~{bed} \
             -p ~{file_label}
         
-        perl /home/anand/Documents/aspire-files/data-oxford/terra.bio/pb-variant-call/scripts/report.pl \
+        perl /scripts/report.pl \
             --fastq ~{raw_hifi_reads_fastq_stats} \
             --pbmmlog ~{raw_hifi_to_reference_alignment_log} \
             --allVariants ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary.tsv \
@@ -55,5 +55,11 @@ task Summary {
         File coverage_depth_plot = file_label + "_coverage_depth.png"
         File variants_summary = file_label + "_variants_summary.tsv"
         File sequence_summary = file_label + "_sequence_summary.tsv"
+    }
+    
+    runtime {
+        docker: "pbvarcall:latest"
+        memory: "32G"
+        disks: "local-disk 40 HDD"
     }
 }

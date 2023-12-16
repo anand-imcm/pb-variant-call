@@ -39,4 +39,10 @@ task CallStructuralVariants {
         File raw_hifi_to_reference_alignment_structural_PASS_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf"
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf"
     }
+    
+    runtime {
+        docker: "pbvarcall:latest"
+        memory: "32G"
+        disks: "local-disk 40 HDD"
+    }
 }

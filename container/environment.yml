@@ -1,0 +1,19 @@
+name: base
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+- python=3.10
+- bzip2
+- pbmm2
+- seqkit
+- samtools
+- pbsv
+- bcftools
+- bedtools
+- whatshap
+- pip
+- pip:
+  - matplotlib
+  - numpy

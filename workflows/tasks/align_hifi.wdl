@@ -40,5 +40,10 @@ task AlignHifiReads {
         File raw_hifi_reads_fastq_stats = file_label + "_raw_hifi_reads_fastq_stats.tab"
         File raw_hifi_to_reference_alignment_depth = file_label + "_raw_hifi_to_reference_alignment_depth.txt"
     }
-
+    
+    runtime {
+        docker: "pbvarcall:latest"
+        memory: "32G"
+        disks: "local-disk 40 HDD"
+    }
 }
