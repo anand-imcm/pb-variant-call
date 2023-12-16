@@ -50,7 +50,7 @@ workflow main {
     }
 
     call report.Summary {
-        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, file_label = prefix
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, file_label = prefix
     }
 
     output {
@@ -79,6 +79,8 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants  
         File coverage_depth_plot = Summary.coverage_depth_plot
+        File variants_summary = Summary.variants_summary
+        File sequence_summary = Summary.sequence_summary
     }
 
     meta {
