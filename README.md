@@ -1,5 +1,9 @@
 # Variant Calling and Annotation using Hi-Fi Reads
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/anand-imcm/pb-variant-call/publish.yml)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/anand-imcm/pb-variant-call)
+
+
 This repository contains a WDL-based workflow for variant calling and annotation using Hi-Fi reads. The workflow includes several steps such as alignment, variant calling, VCF filtering, VCF normalization, variant phasing, variant annotation, and structural variant calling.
 
 ## Workflow Steps
