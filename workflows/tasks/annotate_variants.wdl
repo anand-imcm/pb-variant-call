@@ -20,8 +20,8 @@ task AnnotateVariants {
         perl /opt/vep/src/ensembl-vep/vep --force_overwrite \
             --input_file ~{vcf} \
             --vcf \
-            --output_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated.vcf \
-            --stats_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats.txt \
+            --output_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants.vcf \
+            --stats_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats.txt \
             --stats_text \
             --cache \
             --dir_cache vep_cache/ \
@@ -33,8 +33,8 @@ task AnnotateVariants {
     >>>
 
     output {
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_variants_vep_annotated.vcf"
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_variants_vep_stats.txt"
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants.vcf"
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats.txt"
     }
 
     runtime {
