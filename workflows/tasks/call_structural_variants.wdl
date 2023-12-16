@@ -27,9 +27,16 @@ task CallStructuralVariants {
             genome_reference.fasta \
             ~{file_label}_raw_hifi_to_reference_alignment.svsig.gz \
             ~{file_label}_raw_hifi_to_reference_alignment_structural_variants.vcf
+
+        # bcftools filter PASS variants
+        bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_structural_variants.vcf -Ov -o ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf
+        # bcftools norm and split bialleleic sites
+        bcftools norm ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf -f genome_reference.fasta -m -any -Ov -o ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf
     >>>
 
     output {
         File raw_hifi_to_reference_alignment_structural_variants = file_label + "_raw_hifi_to_reference_alignment_structural_variants.vcf"
+        File raw_hifi_to_reference_alignment_structural_PASS_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf"
+        File raw_hifi_to_reference_alignment_structural_PASS_norm_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf"
     }
 }

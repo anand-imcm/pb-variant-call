@@ -37,8 +37,10 @@ The main inputs to the workflow are:
 The main outputs from the workflow are:
 
 - `raw_hifi_to_reference_alignment_bam`
+- `raw_hifi_to_reference_alignment_index`
 - `raw_hifi_to_reference_alignment_log`
 - `raw_hifi_reads_fastq_stats`
+- `raw_hifi_to_reference_alignment_depth`
 - `raw_hifi_to_reference_alignment_structural_variants_vcf`
 - `raw_hifi_to_reference_alignment_all_variants_vcf`
 - `raw_hifi_to_reference_alignment_all_variants_stats`
@@ -46,9 +48,11 @@ The main outputs from the workflow are:
 - `raw_hifi_to_reference_alignment_PASS_norm_variants`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_stats`
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_annotated_vcf`
 - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vcf`
+- `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf`
+- `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`
+- `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary`
+- `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary`
 - `coverage_depth_plot`
 
 
