@@ -5,8 +5,7 @@ import "./tasks/call_structural_variants.wdl" as svcall
 import "./tasks/call_variants.wdl" as varcall
 import "./tasks/annotate_variants.wdl" as annotate
 import "./tasks/phase_variants.wdl" as phase
-import "./tasks/variant_summary.wdl" as summary
-import "./tasks/summary.wdl" as metrics
+import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
@@ -50,12 +49,8 @@ workflow main {
         input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
     }
 
-    call summary.VariantSummary {
-        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, bed = target_bed, file_label = prefix
-    }
-
-    call metrics.GenerateSummary {
-        input: depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, bed = target_bed, file_label = prefix
+    call report.Summary {
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, file_label = prefix
     }
 
     output {
@@ -78,11 +73,10 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats
 
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary = VariantSummary.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = VariantSummary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = VariantSummary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants
-        
-        File coverage_depth_plot = GenerateSummary.coverage_depth_plot
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants  
+        File coverage_depth_plot = Summary.coverage_depth_plot
     }
 
     meta {
