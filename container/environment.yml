@@ -6,13 +6,13 @@ channels:
 dependencies:
 - python=3.10
 - bzip2
-- pbmm2
-- seqkit
-- samtools
-- pbsv
-- bcftools
-- bedtools
-- whatshap
+- pbmm2<=1.13
+- seqkit<=2.5.1
+- samtools<=1.18
+- pbsv<=2.9.0
+- bcftools<=1.18
+- bedtools<=2.31
+- whatshap<=2.1
 - pip
 - pip:
   - matplotlib
