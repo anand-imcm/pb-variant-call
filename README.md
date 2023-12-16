@@ -93,6 +93,6 @@ The main outputs from the workflow are categorized based on the steps of the wor
   - bedtools
   - whatshap
 - **Containers**
-  - ghcr.io/anand-imcm/wf-pb-amp
+  - ghcr.io/anand-imcm/pb-variant-call
   - google/deepvariant
   - ensemblorg/ensembl-vep
