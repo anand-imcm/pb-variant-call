@@ -6,6 +6,7 @@ task AlignHifiReads {
         File hifi_reads_fastq_gz
         File pbmm2_index
         String file_label
+        String docker
     }  
 
     String log_level = "DEBUG"
@@ -42,7 +43,7 @@ task AlignHifiReads {
     }
     
     runtime {
-        docker: "pbvarcall:latest"
+        docker: "~{docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }

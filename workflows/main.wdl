@@ -10,6 +10,7 @@ import "./tasks/generate_summary.wdl" as report
 workflow main {
 
     String pipeline_version = "1.0.0"
+    String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
 
     input {
         File reads_fastq_gz
@@ -30,7 +31,7 @@ workflow main {
     }
 
     call align.AlignHifiReads {
-        input: hifi_reads_fastq_gz = reads_fastq_gz, pbmm2_index = genome_index_pbmm, file_label = prefix
+        input: hifi_reads_fastq_gz = reads_fastq_gz, pbmm2_index = genome_index_pbmm, file_label = prefix, docker = container_src
     }
 
     call varcall.CallVariants {
@@ -38,11 +39,11 @@ workflow main {
     }
 
     call svcall.CallStructuralVariants {
-        input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix
+        input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
     }
 
     call phase.PhaseVariants {
-        input: vcf = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants, bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, bam_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix
+        input: vcf = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants, bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, bam_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
     }
     
     call annotate.AnnotateVariants {
@@ -50,7 +51,7 @@ workflow main {
     }
 
     call report.Summary {
-        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, file_label = prefix
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, file_label = prefix, docker = container_src
     }
 
     output {

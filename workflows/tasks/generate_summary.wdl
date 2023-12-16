@@ -10,6 +10,7 @@ task Summary {
         File raw_hifi_reads_fastq_stats
         File raw_hifi_to_reference_alignment_log
         String file_label
+        String docker
     }  
 
     command <<<
@@ -58,7 +59,7 @@ task Summary {
     }
     
     runtime {
-        docker: "pbvarcall:latest"
+        docker: "~{docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }

@@ -7,7 +7,8 @@ task CallStructuralVariants {
         File raw_hifi_to_reference_alignment_index
         File genome_reference
         String file_label
-    }  
+        String docker
+    }
 
     command <<<
         set -euo pipefail
@@ -41,7 +42,7 @@ task CallStructuralVariants {
     }
     
     runtime {
-        docker: "pbvarcall:latest"
+        docker: "~{docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }

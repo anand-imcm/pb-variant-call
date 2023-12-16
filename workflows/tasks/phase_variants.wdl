@@ -8,6 +8,7 @@ task PhaseVariants {
         File bam_index
         File genome_reference
         String file_label
+        String docker
     }  
 
     command <<<
@@ -40,7 +41,7 @@ task PhaseVariants {
     }
 
     runtime {
-        docker: "pbvarcall:latest"
+        docker: "~{docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }
