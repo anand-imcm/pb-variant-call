@@ -2,17 +2,17 @@
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/anand-imcm/pb-variant-call/publish.yml)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/anand-imcm/pb-variant-call)
- <a href="https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info">
-    <img src="https://gui.dockstore.org/2.11.1-345c9f3/assets/svg/Dockstore-logo-horizontal-white.svg" alt="Dockstore" height="20">
+<a href="https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info">
+  <img style="background-color: #21335b; display: inline-block;" src="https://gui.dockstore.org/2.11.1-345c9f3/assets/svg/Dockstore-logo-horizontal-white.svg" alt="Dockstore" height="20">
 </a>
 
 This repository contains a WDL-based workflow for variant calling and annotation using Hi-Fi reads. The workflow includes several steps such as alignment, variant calling, VCF filtering, VCF normalization, variant phasing, variant annotation, and structural variant calling.
 
 Import the workflow to your Terra workspace using the link below.
+
 - [Dockstore](https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info)
 
-Locate the 'Launch with' widget at the top right of the Dockstore workflow page, and select the 'Terra' platform option. 
-
+Locate the 'Launch with' widget at the top right of the Dockstore workflow page, and select the 'Terra' platform option.
 
 ## Workflow Steps
 
@@ -28,8 +28,8 @@ Locate the 'Launch with' widget at the top right of the Dockstore workflow page,
 
 - **Variant Annotation**: The "PASS" variants are annotated using `VEP` tool. The output is a VCF file that contains all the additional annotation in the "INFO" column.
 
-- **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF 
-file that contains the called structural variants.
+- **Structural Variant Calling**: The structural variants are called from the alignments using `pbsv`. The output is a VCF
+  file that contains the called structural variants.
 
 - **Summary**: Custom scripts are used to generate coverage depth plot and a summary report.
 
@@ -49,26 +49,31 @@ The main inputs to the workflow are:
 The main outputs from the workflow are categorized based on the steps of the workflow:
 
 - **Alignment**
+
   - `raw_hifi_to_reference_alignment_log`: Log file for the alignment step.
   - `raw_hifi_reads_fastq_stats`: Statistics for the input HiFi reads.
   - `raw_hifi_to_reference_alignment_depth`: Depth of coverage for the alignments.
 
 - **Structural Variant Calling**
+
   - `raw_hifi_to_reference_alignment_structural_variants_vcf`: VCF file containing called structural variants.
   - `raw_hifi_to_reference_alignment_structural_PASS_variants_vcf`: VCF file containing structural variants that have passed all filters.
   - `raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vcf`: VCF file containing normalized structural variants.
 
 - **Variant Calling**
+
   - `raw_hifi_to_reference_alignment_all_variants_vcf`: VCF file containing all called variants.
   - `raw_hifi_to_reference_alignment_all_variants_stats`: Statistics for all called variants.
   - `raw_hifi_to_reference_alignment_PASS_variants`: VCF file containing variants that have passed all filters.
   - `raw_hifi_to_reference_alignment_PASS_norm_variants`: VCF file containing normalized variants.
 
 - **Variant Phasing**
+
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants`: VCF file containing phased variants.
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_stats`: Statistics for phased variants.
 
 - **Variant Annotation**
+
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf`: VCF file containing annotated variants.
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`: Statistics for annotated variants.
 
