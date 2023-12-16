@@ -47,43 +47,37 @@ The main inputs to the workflow are:
 
 The main outputs from the workflow are categorized based on the steps of the workflow:
 
-### Alignment
+- **Alignment**
+  - `raw_hifi_to_reference_alignment_log`: Log file for the alignment step.
+  - `raw_hifi_reads_fastq_stats`: Statistics for the input HiFi reads.
+  - `raw_hifi_to_reference_alignment_depth`: Depth of coverage for the alignments.
 
-- `raw_hifi_to_reference_alignment_log`: Log file for the alignment step.
-- `raw_hifi_reads_fastq_stats`: Statistics for the input HiFi reads.
-- `raw_hifi_to_reference_alignment_depth`: Depth of coverage for the alignments.
+- **Structural Variant Calling**
+  - `raw_hifi_to_reference_alignment_structural_variants_vcf`: VCF file containing called structural variants.
+  - `raw_hifi_to_reference_alignment_structural_PASS_variants_vcf`: VCF file containing structural variants that have passed all filters.
+  - `raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vcf`: VCF file containing normalized structural variants.
 
-### Structural Variant Calling
+- **Variant Calling**
+  - `raw_hifi_to_reference_alignment_all_variants_vcf`: VCF file containing all called variants.
+  - `raw_hifi_to_reference_alignment_all_variants_stats`: Statistics for all called variants.
+  - `raw_hifi_to_reference_alignment_PASS_variants`: VCF file containing variants that have passed all filters.
+  - `raw_hifi_to_reference_alignment_PASS_norm_variants`: VCF file containing normalized variants.
 
-- `raw_hifi_to_reference_alignment_structural_variants_vcf`: VCF file containing called structural variants.
-- `raw_hifi_to_reference_alignment_structural_PASS_variants_vcf`: VCF file containing structural variants that have passed all filters.
-- `raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vcf`: VCF file containing normalized structural variants.
+- **Variant Phasing**
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants`: VCF file containing phased variants.
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_stats`: Statistics for phased variants.
 
-### Variant Calling
+- **Variant Annotation**
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf`: VCF file containing annotated variants.
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`: Statistics for annotated variants.
 
-- `raw_hifi_to_reference_alignment_all_variants_vcf`: VCF file containing all called variants.
-- `raw_hifi_to_reference_alignment_all_variants_stats`: Statistics for all called variants.
-- `raw_hifi_to_reference_alignment_PASS_variants`: VCF file containing variants that have passed all filters.
-- `raw_hifi_to_reference_alignment_PASS_norm_variants`: VCF file containing normalized variants.
-
-### Variant Phasing
-
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_variants`: VCF file containing phased variants.
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_stats`: Statistics for phased variants.
-
-### Variant Annotation
-
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf`: VCF file containing annotated variants.
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`: Statistics for annotated variants.
-
-### Summary
-
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary`: Summary of variants.
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary`: Summary of on-target variants.
-- `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants.
-- `coverage_depth_plot`: Plot of coverage depth.
-- `variants_summary`: Summary of all variants.
-- `sequence_summary`: Summary of sequences.
+- **Summary**
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary`: Summary of variants.
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary`: Summary of on-target variants.
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants.
+  - `coverage_depth_plot`: Plot of coverage depth.
+  - `variants_summary`: Summary of all variants.
+  - `sequence_summary`: Summary of sequences.
 
 ## Components
 
