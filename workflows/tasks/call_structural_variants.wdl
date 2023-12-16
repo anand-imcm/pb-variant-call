@@ -26,10 +26,10 @@ task CallStructuralVariants {
         pbsv call \
             genome_reference.fasta \
             ~{file_label}_raw_hifi_to_reference_alignment.svsig.gz \
-            ~{file_label}raw_hifi_to_reference_alignment_structural_variants.vcf
+            ~{file_label}_raw_hifi_to_reference_alignment_structural_variants.vcf
     >>>
 
     output {
-        File raw_hifi_to_reference_alignment_structural_variants = file_label + "raw_hifi_to_reference_alignment_structural_variants.vcf"
+        File raw_hifi_to_reference_alignment_structural_variants = file_label + "_raw_hifi_to_reference_alignment_structural_variants.vcf"
     }
 }
