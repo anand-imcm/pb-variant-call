@@ -2,9 +2,7 @@
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/anand-imcm/pb-variant-call/publish.yml)&nbsp;&nbsp;
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/anand-imcm/pb-variant-call)&nbsp;&nbsp;
-<a href="https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info">
-    <img src="dockstore.svg" alt="Dockstore" height="20">
-</a>
+[![Open](https://img.shields.io/badge/Open-Dockstore-blue)](https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info)
 
 This repository contains a WDL-based workflow for variant calling and annotation using Hi-Fi reads. The workflow includes several steps such as alignment, variant calling, VCF filtering, VCF normalization, variant phasing, variant annotation, and structural variant calling.
 
