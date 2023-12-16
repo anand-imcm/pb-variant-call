@@ -6,6 +6,13 @@
 
 This repository contains a WDL-based workflow for variant calling and annotation using Hi-Fi reads. The workflow includes several steps such as alignment, variant calling, VCF filtering, VCF normalization, variant phasing, variant annotation, and structural variant calling.
 
+Import the workflow to your Terra workspace using the link below.
+
+- [Dockstore](https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info)
+
+Locate the 'Launch with' widget at the top right of the Dockstore workflow page, and select the 'Terra' platform option. 
+
+
 ## Workflow Steps
 
 - **Alignment**: The HiFi reads are aligned to a reference genome using `pbmm2`. The output is a BAM file that contains the alignments.
