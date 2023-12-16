@@ -72,12 +72,12 @@ The main outputs from the workflow are categorized based on the steps of the wor
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats`: Statistics for annotated variants.
 
 - **Summary**
-  - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary`: Summary of variants.
-  - `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary`: Summary of on-target variants.
-  - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants.
-  - `coverage_depth_plot`: Plot of coverage depth.
-  - `variants_summary`: Summary of all variants.
-  - `sequence_summary`: Summary of sequences.
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary`: List of variants (tab delimited text).
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary`: List of on-target variants (tab delimited text).
+  - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants (vcf).
+  - `coverage_depth_plot`: Plot of coverage depth (png).
+  - `variants_summary`: Summary of all variants (tab delimited text).
+  - `sequence_summary`: Summary reads and total variants found in the sample (tab delimited text).
 
 ## Components
 
