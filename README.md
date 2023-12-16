@@ -8,7 +8,7 @@ This repository contains a WDL-based workflow for variant calling and annotation
 
 Import the workflow to your Terra workspace using the link below.
 
-- [Dockstore](https://dockstore.org/my-workflows/github.com/anand-imcm/pb-variant-call)
+- [Dockstore](https://dockstore.org/workflows/github.com/anand-imcm/pb-variant-call:main?tab=info)
 
 Locate the 'Launch with' widget at the top right of the Dockstore workflow page, and select the 'Terra' platform option. 
 
