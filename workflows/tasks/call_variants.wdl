@@ -7,7 +7,7 @@ task CallVariants {
         File raw_hifi_to_reference_alignment_index
         File genome_reference
         String file_label
-        String deepvariant_version = "1.6.0"
+        String deepvariant_version = "1.5.0"
         Int deepvariant_num_shards = 12
     }  
 
@@ -21,18 +21,23 @@ task CallVariants {
         ln -s ~{raw_hifi_to_reference_alignment_index} ~{file_label}_raw_hifi_to_reference_alignment.bam.bai
 
         samtools faidx genome_reference.fasta -o genome_reference.fasta.fai
-        
-        /opt/deepvariant/bin/run_deepvariant \
-            --model_type PACBIO \
-            --num_shards ~{deepvariant_num_shards} \
-            --ref genome_reference.fasta \
-            --reads ~{file_label}_raw_hifi_to_reference_alignment.bam \
-            --output_vcf  ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz
 
-        # bcftools filter PASS variants
-        bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz
-        # bcftools norm and split bialleleic sites
-        bcftools norm ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz -f genome_reference.fasta -m -any -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants.vcf.gz
+        # Check if the output of samtools view command has any lines
+        if [ $(samtools view ~{file_label}_raw_hifi_to_reference_alignment.bam | wc -l) -eq 0 ]; then
+            touch ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz ~{file_label}_raw_hifi_to_reference_alignment_all_variants.visual_report.html ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants.vcf.gz
+        else
+            /opt/deepvariant/bin/run_deepvariant \
+                --model_type PACBIO \
+                --num_shards ~{deepvariant_num_shards} \
+                --ref genome_reference.fasta \
+                --reads ~{file_label}_raw_hifi_to_reference_alignment.bam \
+                --output_vcf  ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz
+
+            # bcftools filter PASS variants
+            bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz
+            # bcftools norm and split bialleleic sites
+            bcftools norm ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz -f genome_reference.fasta -m -any -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_variants.vcf.gz
+        fi
     >>>
 
     output {

@@ -15,21 +15,26 @@ task AnnotateVariants {
 
         ln -s ~{genome_reference} genome_reference.fasta
 
-        unzip ~{vep_cache} -d vep_cache/
+        # Check if the output of samtools view command has any lines
+        if [ $(grep -v "#" ~{vcf} | wc -l) -eq 0 ]; then
+            touch ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants.vcf ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats.txt
+        else
+            unzip ~{vep_cache} -d vep_cache/
 
-        perl /opt/vep/src/ensembl-vep/vep --force_overwrite \
-            --input_file ~{vcf} \
-            --vcf \
-            --output_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants.vcf \
-            --stats_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats.txt \
-            --stats_text \
-            --cache \
-            --dir_cache vep_cache/ \
-            --fasta genome_reference.fasta \
-            --numbers -offline --hgvs --shift_hgvs 0 --terms SO --symbol \
-            --sift b --polyphen b --total_length --ccds --canonical --biotype \
-            --protein --xref_refseq --mane --pubmed --af --max_af --af_1kg --af_gnomadg \
-            --custom file=vep_cache/clinvar.vcf.gz,short_name=ClinVar,format=vcf,type=exact,coords=0,fields=CLNSIG%CLNREVSTAT%CLNDN
+            perl /opt/vep/src/ensembl-vep/vep --force_overwrite \
+                --input_file ~{vcf} \
+                --vcf \
+                --output_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants.vcf \
+                --stats_file ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats.txt \
+                --stats_text \
+                --cache \
+                --dir_cache vep_cache/ \
+                --fasta genome_reference.fasta \
+                --numbers -offline --hgvs --shift_hgvs 0 --terms SO --symbol \
+                --sift b --polyphen b --total_length --ccds --canonical --biotype \
+                --protein --xref_refseq --mane --pubmed --af --max_af --af_1kg --af_gnomadg \
+                --custom file=vep_cache/clinvar.vcf.gz,short_name=ClinVar,format=vcf,type=exact,coords=0,fields=CLNSIG%CLNREVSTAT%CLNDN
+        fi
     >>>
 
     output {

@@ -79,7 +79,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary
         File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants  
-        File coverage_depth_plot = Summary.coverage_depth_plot
+        File? coverage_depth_plot = Summary.coverage_depth_plot
         File variants_summary = Summary.variants_summary
         File sequence_summary = Summary.sequence_summary
     }

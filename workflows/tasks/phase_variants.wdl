@@ -20,19 +20,23 @@ task PhaseVariants {
         ln -s ~{bam} sample.bam
         ln -s ~{bam_index} sample.bam.bai
 
-        # phasing
-        whatshap phase \
-            ~{vcf} \
-            sample.bam \
-            --reference=genome_reference.fasta \
-            --indels \
-            --output ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
+        # Check if the output of samtools view command has any lines
+        if [ $(samtools view ~{file_label}_raw_hifi_to_reference_alignment.bam | wc -l) -eq 0 ]; then
+            touch ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
+        else
+            # phasing
+            whatshap phase \
+                ~{vcf} \
+                sample.bam \
+                --reference=genome_reference.fasta \
+                --indels \
+                --output ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
 
-        # phasing stats
-        whatshap stats \
-            ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
-            --tsv=~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
-
+            # phasing stats
+            whatshap stats \
+                ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
+                --tsv=~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
+        fi
     >>>
 
     output {
