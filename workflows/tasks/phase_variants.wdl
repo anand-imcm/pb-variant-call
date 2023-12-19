@@ -21,7 +21,7 @@ task PhaseVariants {
         ln -s ~{bam_index} sample.bam.bai
 
         # Check if the output of samtools view command has any lines
-        if [ $(samtools view ~{file_label}_raw_hifi_to_reference_alignment.bam | wc -l) -eq 0 ]; then
+        if [ $(zcat ~{vcf}| grep -v "#" | wc -l) -eq 0 ]; then
             touch ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
         else
             # phasing
