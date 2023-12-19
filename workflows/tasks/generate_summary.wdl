@@ -24,6 +24,13 @@ task Summary {
             modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
             sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary.tsv
 
+            # applying VAF greater than 0.5 on all variants
+            bcftools view -i 'VAF>0.5' ~{vcf} > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_vep_annotated.vcf
+            # summary VAF greater than 0.5 on all variants
+            bcftools query -Hu -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%GT:%GQ:%DP:%AD:%VAF:%PL:%PS]\n" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_vep_annotated.vcf > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_summary.tsv
+            modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
+            sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_summary.tsv
+
             # on-target variants vcf
             bedtools intersect -header -a ~{vcf} -b ~{bed} -wa > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vep_annotated.vcf
 
@@ -31,6 +38,13 @@ task Summary {
             bcftools query -Hu -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%GT:%GQ:%DP:%AD:%VAF:%PL:%PS]\n" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vep_annotated.vcf > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary.tsv
             modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
             sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary.tsv
+
+            # applying VAF greater than 0.5 ontarget variants
+            bcftools view -i 'VAF>0.5' ~{vcf} > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_VAF_gt0.5_variants_vep_annotated.vcf
+            # summary VAF greater than 0.5 ontarget variants
+            bcftools query -Hu -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%GT:%GQ:%DP:%AD:%VAF:%PL:%PS]\n" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_VAF_gt0.5_variants_vep_annotated.vcf > ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_ontarget_variants_summary.tsv
+            modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_ontarget_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
+            sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_ontarget_variants_summary.tsv
         fi
 
         if [ $(grep -v "#" ~{vcfSV} | wc -l) -eq 0 ]; then
@@ -55,6 +69,8 @@ task Summary {
             --allVariants ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary.tsv \
             --onTargetVariants ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary.tsv \
             --structuralVariants ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv \
+            --allVAF ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_variants_summary.tsv \
+            --onTargetVAF ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_VAF_gt0.5_ontarget_variants_summary.tsv \
             --prefix ~{file_label}
     >>>
 
@@ -65,6 +81,7 @@ task Summary {
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv"
         File? coverage_depth_plot = file_label + "_coverage_depth.png"
         File variants_summary = file_label + "_variants_summary.tsv"
+        File variants_vaf_gt0_5_summary = file_label + "_vaf_gt0.5_variants_summary.tsv"
         File sequence_summary = file_label + "_sequence_summary.tsv"
     }
     

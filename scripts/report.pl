@@ -11,6 +11,8 @@ my $pbmm2_log = '';
 my $dv_variants_summ = '';
 my $dv_ontarget_variants_summ = '';
 my $sv_summ = '';
+my $dv_filtered_variants_summ = '';
+my $dv_ontarget_filtered_variants_summ = '';
 my $prefix = '';
 
 my $help = '';
@@ -21,6 +23,8 @@ GetOptions ('fastq=s' => \$fastq_seqkit_stats,
             'allVariants=s' => \$dv_variants_summ,
             'onTargetVariants=s' => \$dv_ontarget_variants_summ,
             'structuralVariants=s' => \$sv_summ,
+            'allVAF=s' => \$dv_filtered_variants_summ,
+            'onTargetVAF=s' => \$dv_ontarget_filtered_variants_summ,
             'prefix=s' => \$prefix,
 			'help'  => \$help
 			);
@@ -35,6 +39,7 @@ if ($help) {
 }
 
 my $unique_variant_summary=$prefix."_variants_summary.tsv";
+my $unique_VAF_gt0_5_variant_summary=$prefix."_vaf_gt0.5_variants_summary.tsv";
 my $sequence_summary=$prefix."_sequence_summary.tsv";
 
 
@@ -47,41 +52,42 @@ my $alignment_perc = 0;
 
 my $total_unmapped_reads = $fastq_stats{'num_seqs'} - $total_mapped_reads;
 
-my ($count_snp,$count_indel,$count_ontarget_vars,$count_ontarget_snp,$count_ontarget_indel,$count_sv,$header_info,@variants_tab) = parse_variants($dv_variants_summ,$dv_ontarget_variants_summ,$sv_summ);
+my ($count_sv) = parse_sv($sv_summ);
+my ($count_snp,$count_indel,$count_ontarget_vars,$count_ontarget_snp,$count_ontarget_indel,$header_info,@variants_tab) = parse_variants($dv_variants_summ,$dv_ontarget_variants_summ);
+my ($count_filtered_snp,$count_filtered_indel,$count_filtered_ontarget_filtered_vars,$count_filtered_ontarget_filtered_snp,$count_filtered_ontarget_filtered_indel,$header_filtered_info,@variants_filtered_tab) = parse_variants($dv_filtered_variants_summ,$dv_ontarget_filtered_variants_summ);
 
 if ($total_mapped_reads != 0){
     $alignment_perc = sprintf("%.2f",($total_mapped_reads/$fastq_stats{'num_seqs'})*100);
 }
+print "$prefix\t$fastq_stats{'num_seqs'}\t$fastq_stats{'sum_len'}\t$fastq_stats{'min_len'}\t$fastq_stats{'avg_len'}\t$fastq_stats{'max_len'}\t$fastq_stats{'Q1'}\t$fastq_stats{'Q2'}\t$fastq_stats{'Q3'}\t$fastq_stats{'sum_gap'}\t$fastq_stats{'N50'}\t$fastq_stats{'Q20%'}\t$fastq_stats{'Q30%'}\t$fastq_stats{'GC%'}\t$total_mapped_reads\t$total_unmapped_reads\t$alignment_perc\t$count_sv\t".scalar @variants_tab."\t$count_snp\t$count_indel\t$count_ontarget_vars\t$count_ontarget_snp\t$count_ontarget_indel\t".scalar @variants_filtered_tab."\t$count_filtered_snp\t$count_filtered_indel\t$count_filtered_ontarget_filtered_vars\t$count_filtered_ontarget_filtered_snp\t$count_filtered_ontarget_filtered_indel\n";
 
-open (SEQ,">$sequence_summary") or die("Cannot write to - $sequence_summary");
-print SEQ "file\tfastq_num_seqs\tfastq_sum_len\tfastq_min_len\tfastq_avg_len\tfastq_max_len\tfastq_Q1\tfastq_Q2\tfastq_Q3\tfastq_sum_gap\tfastq_N50\tfastq_Q20(%)\tfastq_Q30(%)\tfastq_GC(%)\ttotal_mapped_reads\ttotal_unmapped_reads\ttotal_alignment%\ttotal_variants\ttotal_structural_variants\ttotal_snps\ttotal_indels\ttotal_ontarget_variants\ttotal_ontarget_snps\ttotal_ontarget_indels\n";
-print SEQ "$prefix\t$fastq_stats{'num_seqs'}\t$fastq_stats{'sum_len'}\t$fastq_stats{'min_len'}\t$fastq_stats{'avg_len'}\t$fastq_stats{'max_len'}\t$fastq_stats{'Q1'}\t$fastq_stats{'Q2'}\t$fastq_stats{'Q3'}\t$fastq_stats{'sum_gap'}\t$fastq_stats{'N50'}\t$fastq_stats{'Q20%'}\t$fastq_stats{'Q30%'}\t$fastq_stats{'GC%'}\t$total_mapped_reads\t$total_unmapped_reads\t$alignment_perc\t".scalar @variants_tab."\t$count_sv\t$count_snp\t$count_indel\t$count_ontarget_vars\t$count_ontarget_snp\t$count_ontarget_indel\n";
+open (SEQ,">$sequence_summary") or die("Cannot write to $sequence_summary");
+print SEQ "file\tfastq_num_seqs\tfastq_sum_len\tfastq_min_len\tfastq_avg_len\tfastq_max_len\tfastq_Q1\tfastq_Q2\tfastq_Q3\tfastq_sum_gap\tfastq_N50\tfastq_Q20(%)\tfastq_Q30(%)\tfastq_GC(%)\ttotal_mapped_reads\ttotal_unmapped_reads\ttotal_alignment%\ttotal_structural_variants\ttotal_variants\ttotal_snps\ttotal_indels\ttotal_ontarget_variants\ttotal_ontarget_snps\ttotal_ontarget_indels\ttotal_variants_vaf_gt0.5\ttotal_snps_vaf_gt0.5\ttotal_indels_vaf_gt0.5\ttotal_ontarget_variants_vaf_gt0.5\ttotal_ontarget_snps_vaf_gt0.5\ttotal_ontarget_indels_vaf_gt0.5\n";
+print SEQ "$prefix\t$fastq_stats{'num_seqs'}\t$fastq_stats{'sum_len'}\t$fastq_stats{'min_len'}\t$fastq_stats{'avg_len'}\t$fastq_stats{'max_len'}\t$fastq_stats{'Q1'}\t$fastq_stats{'Q2'}\t$fastq_stats{'Q3'}\t$fastq_stats{'sum_gap'}\t$fastq_stats{'N50'}\t$fastq_stats{'Q20%'}\t$fastq_stats{'Q30%'}\t$fastq_stats{'GC%'}\t$total_mapped_reads\t$total_unmapped_reads\t$alignment_perc\t$count_sv\t".scalar @variants_tab."\t$count_snp\t$count_indel\t$count_ontarget_vars\t$count_ontarget_snp\t$count_ontarget_indel\t".scalar @variants_filtered_tab."\t$count_filtered_snp\t$count_filtered_indel\t$count_filtered_ontarget_filtered_vars\t$count_filtered_ontarget_filtered_snp\t$count_filtered_ontarget_filtered_indel\n";
 close SEQ;
 
-open (TMP,">temp.summary.tsv") or die("Cannot write to - temp.summary.tsv");
-print TMP "Chr\tPos\tRef\tAlt\tis_on_target\tSample\t$header_info\n";
-print TMP join("\n",@variants_tab)."\n";
-close TMP;
+write_variants($unique_variant_summary,$header_info,@variants_tab);
+write_variants($unique_VAF_gt0_5_variant_summary,$header_filtered_info,@variants_filtered_tab);
 
-my $sorted_variants = `head -n 1 temp.summary.tsv && tail -n +2 temp.summary.tsv | sort -k2,2n`;
-open (VARS,">$unique_variant_summary") or die("Cannot write to - $unique_variant_summary");
-print VARS $sorted_variants;
-close VARS;
+sub write_variants {
+    my ($out_file,$header,@variants) = (@_);
+    open (TMP,">temp.summary.tsv") or die("Cannot write to - temp.summary.tsv");
+    print TMP "Chr\tPos\tRef\tAlt\tis_on_target\tSample\t$header\n";
+    print TMP join("\n",@variants)."\n";
+    close TMP;
 
-system("rm temp.summary.tsv");
+    my $sorted_variants = `head -n 1 temp.summary.tsv && tail -n +2 temp.summary.tsv | sort -k2,2n`;
+    open (VARS,">$out_file") or die("Cannot write to - $out_file");
+    print VARS $sorted_variants;
+    close VARS;
 
-sub parse_variants {
-    my ($tsv_all,$tsv_ontarget,$sv_summ) = (@_);
-    my @variants;
-    my %on_target;
-    my %all_variants;
+    system("rm temp.summary.tsv");
+}
+
+
+sub parse_sv {
+    my ($sv_summ) = (@_);
     my %structural_variants;
-    my $count_ontarget_vars=0;
-    my $count_snp=0;
-    my $count_indel=0;
-    my $count_ontarget_snp=0;
-    my $count_ontarget_indel=0;
-    my $header_info;
     my $count_sv=0;
 
     open (SV,"$sv_summ") or die("Cannot read table - $sv_summ: $!");
@@ -96,6 +102,21 @@ sub parse_variants {
         push @{$structural_variants{$variantKey}{'info'}}, $rec_sv_cols[-1];
         push @{$structural_variants{$variantKey}{'SAM'}}, $rec_sv_cols[-2];
     }
+    $count_sv = keys %structural_variants;
+    return($count_sv);
+}
+
+sub parse_variants {
+    my ($tsv_all,$tsv_ontarget) = (@_);
+    my @variants;
+    my %on_target;
+    my %all_variants;
+    my $count_ontarget_vars=0;
+    my $count_snp=0;
+    my $count_indel=0;
+    my $count_ontarget_snp=0;
+    my $count_ontarget_indel=0;
+    my $header_info;
 
     open (OT,"$tsv_ontarget") or die("Cannot read table - $tsv_ontarget: $!");
     my $header_ontarget = <OT>;
@@ -156,10 +177,7 @@ sub parse_variants {
         }
         push @variants,$var_string;
     }
-
-    print Dumper(\%structural_variants);
-    $count_sv = keys %structural_variants;
-    return($count_snp,$count_indel,$count_ontarget_vars,$count_ontarget_snp,$count_ontarget_indel,$count_sv,$header_info,@variants);
+    return($count_snp,$count_indel,$count_ontarget_vars,$count_ontarget_snp,$count_ontarget_indel,$header_info,@variants);
 }
 
 sub parse_pbmm2log {
