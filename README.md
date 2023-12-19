@@ -85,7 +85,7 @@ The main outputs from the workflow are categorized based on the steps of the wor
   - `raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants (vcf).
   - `coverage_depth_plot`: Plot of coverage depth (png).
   - `variants_summary`: Summary of all variants (tab delimited text).
-  - `variants_vaf_gt0.5_summary`: Summary of all variants after filtering by variant allele frequency (VAF<0.5) (tab delimited text).
+  - `variants_vaf_gt0.5_summary`: Summary of all variants after filtering by variant allele fraction (VAF<0.5) (tab delimited text).
   - `sequence_summary`: Summary reads and total variants found in the sample (tab delimited text).
 
 ## Components
