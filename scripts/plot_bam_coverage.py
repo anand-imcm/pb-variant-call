@@ -7,8 +7,8 @@ from matplotlib.ticker import FuncFormatter
 
 def parse_arguments():
     parser = argparse.ArgumentParser(prog='plot_bam_coverage.py', description='Create a coverage plot using output from samtools depth.')
-    parser.add_argument('-d','--depth',type=str, help='Tab delimited file containing the depth at each position or region. (samtools depth alignment.bam > alignment.depth)', required=True)
-    parser.add_argument('-t','--target',type=str, help='Target region coordinates in bed format', required=True)
+    parser.add_argument('-d','--depth',type=str, help='Tab delimited file containing the depth at each position or region. (Output from: samtools depth alignment.bam > alignment.depth)', required=True)
+    parser.add_argument('-t','--target',type=str, help='Target region coordinates in bed format. (zero-based bed file without any header)', required=True)
     parser.add_argument('-p','--prefix',type=str, help='Output prefix', required=True)
     return parser.parse_args()
 
@@ -23,7 +23,7 @@ def read_bed_file(bed_file_path):
     with open(bed_file_path, 'r') as bed_file:
         for line in bed_file:
             fields = line.strip().split('\t')
-            bed_intervals.append((int(fields[1]), int(fields[2])))
+            bed_intervals.append((int(fields[1])+1, int(fields[2])))
             bed_labels.append(fields[3])
     return bed_intervals, bed_labels
 

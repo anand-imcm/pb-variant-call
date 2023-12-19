@@ -24,10 +24,10 @@ workflow main {
     parameter_meta {
         reads_fastq_gz : "Input PacBio HiFi reads in .fastq.gz format."
         prefix : "Sample name. This will be used as prefix for all the output files."
-        genome_ref : "Human reference genome .fasta file."
+        genome_ref : "Human reference genome .fasta file. Using: Homo_sapiens.GRCh38.release110.dna.chromosome.1.fa"
         genome_index_pbmm : "Reference index generated through pbmm2 in .mmi format."
-        vep_cache : "VEP cache in .zip format. (Source: https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache)"
-        target_bed : "Coordinates for the amplified regions (target) in .bed format."
+        vep_cache : "VEP cache in .zip format. (Source: https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache). Using: Ensembl GRCh38 release v110"
+        target_bed : "Coordinates for the amplified regions (target) in .bed format. (zero-based bed file without any header)"
     }
 
     call align.AlignHifiReads {
