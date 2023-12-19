@@ -31,12 +31,20 @@ This repository contains a WDL-based workflow for variant calling and annotation
 
 The main inputs to the workflow are:
 
-- `reads_fastq_gz` : Input PacBio HiFi reads in .fastq.gz format.
-- `prefix` : Sample name. This will be used as prefix for all the output files.
-- `genome_ref` : Human reference genome .fasta file.
-- `genome_index_pbmm` : Reference index generated through pbmm2 in .mmi format.
-- `vep_cache` : VEP cache in .zip format. This cache is required for the `VEP` tool to function. You can download the cache from [Ensembl's website](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache).
-- `target_bed` : "Coordinates for the amplified regions (target) in .bed format."
+- **required**
+
+  - `reads_fastq_gz` : Input PacBio HiFi reads in .fastq.gz format.
+  - `prefix` : Sample name. This will be used as prefix for all the output files.
+  - `genome_ref` : Human reference genome .fasta file. The version being used is GRCh38 release110 ([source](https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/)).
+  - `genome_index_pbmm` : Reference index generated through pbmm2 in .mmi format.
+  - `vep_cache` : VEP cache in .zip format. This cache is required for the `VEP` tool to function. The version being used is Ensembl GRCh38 release v110 ([source](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache)).
+  - `target_bed` : "Coordinates for the target (amplified) regions. (0-based bed file). Ensembl/Gencode gene model is currently being used."
+
+- **optional**
+
+  - `vep_version` : The version of the VEP tool to use. Default value: `release_110.1`. This should be compatible with the `vep_cache` version.
+  - `deepvariant_num_shards` : The number of shards to use when running DeepVariant. Default value : `12`.
+  - `deepvariant_version` : The version of the DeepVariant tool to use. Default value: `1.5.0`.
 
 ## Outputs
 
