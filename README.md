@@ -74,6 +74,7 @@ The main output files are listed below:
   - `PASS_norm_phased_variants_summary`: List of variants (tab delimited text).
   - `PASS_norm_phased_ontarget_variants_summary`: List of on-target variants (tab delimited text).
   - `PASS_norm_phased_annotated_ontarget_variants_vcf`: VCF file containing annotated on-target variants (vcf).
+  - `Structural_PASS_norm_variants_summary`: List of structural variants (tab delimited text).
   - `coverage_depth_plot`: Plot of coverage depth (png).
   - `variants_summary`: Summary of all variants (tab delimited text).
   - `variants_vaf_gt0.5_summary`: Summary of all variants after filtering by variant allele fraction (VAF<0.5) (tab delimited text).
