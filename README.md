@@ -169,11 +169,11 @@ The annotated VEP output is derived from the following parameters:
   - `PL`: Phred-scaled likelihoods for genotypes as defined in the VCF specification.
   - `PS`: Phase set, indicating variants that are in the same phased haplotype. [More details here](https://whatshap.readthedocs.io/en/latest/guide.html#phase-sets).
   
-  > [!NOTE]
-  > VAF = AD_variant / (AD_reference + AD_variant) 
-  > `AD`           = Allele Depth, the number of reads supporting each allele.
-  > `AD_reference` = Number of reads supporting the reference allele.
-  > `AD_variant`   = Number of reads supporting the reference allele.
+> [!NOTE]
+> VAF = AD_variant / (AD_reference + AD_variant) 
+> `AD`           = Allele Depth, the number of reads supporting each allele.
+> `AD_reference` = Number of reads supporting the reference allele.
+> `AD_variant`   = Number of reads supporting the reference allele.
 
 ## Components
 
