@@ -38,6 +38,7 @@ def plot_coverage(positions, coverage, bed_intervals, bed_labels, plot_file, plo
     plt.xlabel('Position')
     plt.ylabel('Depth')
     plt.grid(True)
+    plt.ylim(0, max(smooth_coverage) * 1.1)
 
     for i, interval in enumerate(bed_intervals):
         x_formatter = FuncFormatter(lambda x, p: format(int(x), ','))
