@@ -48,7 +48,7 @@ The main inputs to the workflow are:
 
 ## Outputs
 
-The main outputs from the workflow are categorized based on the steps of the workflow:
+The main output files are listed below:
 
 - **Alignment**
   - `alignment_log`: Log file for the alignment step.
@@ -77,6 +77,103 @@ The main outputs from the workflow are categorized based on the steps of the wor
   - `variants_summary`: Summary of all variants (tab delimited text).
   - `variants_vaf_gt0.5_summary`: Summary of all variants after filtering by variant allele fraction (VAF<0.5) (tab delimited text).
   - `sequence_summary`: Summary reads and total variants found in the sample (tab delimited text).
+
+## Detailed Description of Annotation and Summary Outputs
+
+### Annotation
+
+The following annotation sources are currently being used by VEP:
+
+- 1000 Genomes Project: phase3
+- Assembly: GRCh38.p14
+- COSMIC: 97
+- ClinVar: 202301
+- GENCODE: 44
+- Genebuild: 2014-07
+- HGMD-PUBLIC: 20204
+- PolyPhen: 2.2.3
+- Regbuild: 1.0
+- SIFT: 6.2.1
+- dbSNP: 154
+- gnomAD exomes: r2.1.1
+- gnomAD genomes: v3.1.2
+
+The annotated VEP output is derived from the following parameters:
+
+- `--af`: Global allele frequency from all populations in the 1000 Genomes Project to the output.
+- `--af_1kg`: Allele frequency data for each of the five major populations in the 1000 Genomes Project`: African, American, East Asian, European, and South Asian.
+- `--af_gnomadg`: Allele frequency data from the gnomAD genome dataset to the output.
+- `--biotype`: Biotype of the transcript.
+- `--canonical`: A flag for the transcripts that are marked as canonical in the Ensembl database.
+- `--ccds`: Consensus CDS (CCDS) ID, if available.
+- `--custom`: Custom annotation data from a ClinVar. This includes the clinical significance (CLNSIG), review status (CLNREVSTAT), and disease name (CLNDN).
+- `--hgvs`: HGVS notations for the variant.
+- `--mane`: A flag for the transcripts that are marked as MANE Select or MANE Plus Clinical in the Ensembl database.
+- `--max_af`: Maximum allele frequency across all populations.
+- `--numbers`: Exon and intron numbers.
+- `--polyphen b`: PolyPhen scores, using both possible and divergent predictions.
+- `--protein`: Protein sequence change.
+- `--pubmed`: PubMed IDs for associated publications.
+- `--shift_hgvs 0`: Disables shifting HGVS notations to account for base numbering differences between coding and genomic sequences.
+- `--sift b`: SIFT scores, using both possible and divergent predictions.
+- `--symbol`: Gene symbol.
+- `--total_length`: Total length of the transcript.
+- `--xref_refseq`: RefSeq IDs, if available.
+
+> [!NOTE]
+> The consequence annotation (`CSQ`) is added to `INFO` field of the output VCF file.
+> Each variant's annotation is a string of values separated by pipe characters (|). The values include the allele, the predicted consequence, the impact, the gene symbol, the gene ID, the feature type, the feature ID, the biotype, exon and intron numbers, HGVS notations, cDNA, CDS and protein positions, amino acid changes, codon changes, existing variation IDs, distance to the feature, strand, flags, symbol source, HGNC ID, canonical and MANE flags, CCDS ID, protein ID, RefSeq ID, source, SIFT and PolyPhen scores, HGVS offset, allele frequencies, maximum allele frequency, clinical significance, somatic flag, phenotype flag, PubMed IDs, and ClinVar data.
+
+### Summary tables
+
+- **The sequence summary table (tsv) consists of the following information**
+  - `file`: Input ID
+  - `fastq_num_seqs`: Number of sequences
+  - `fastq_sum_len`: Number of bases or residues, with gaps or spaces counted
+  - `fastq_min_len`: Minimal sequence length, with gaps or spaces counted
+  - `fastq_avg_len`: Average sequence length, with gaps or spaces counted
+  - `fastq_max_len`: Maximal sequence length, with gaps or spaces counted
+  - `fastq_Q1`: First quartile of sequence length, with gaps or spaces counted
+  - `fastq_Q2`: Median of sequence length, with gaps or spaces counted
+  - `fastq_Q3`: third quartile of sequence length, with gaps or spaces counted
+  - `fastq_sum_gap`: Number of gaps
+  - `fastq_N50`: [N50](https://en.wikipedia.org/wiki/N50,_L50,_and_related_statistics#N50)
+  - `fastq_Q20(%)`: Percentage of bases with the quality score greater than 20
+  - `fastq_Q30(%)`: percentage of bases with the quality score greater than 30
+  - `fastq_GC(%)`: Percentage of GC content
+  - `total_mapped_reads`: Total number of reads that were mapped to the reference genome.
+  - `total_unmapped_reads`: Total number of reads that were not mapped to the reference genome.
+  - `total_alignment%`: Percentage of total reads that were successfully aligned to the reference genome.
+  - `total_structural_variants`: Total number of structural variants detected.
+  - `total_variants`: Total number of variants (SNPs and indels) detected.
+  - `total_snps`: Total number of single nucleotide polymorphisms (SNPs) detected.
+  - `total_indels`: Total number of insertions and deletions (indels) detected.
+  - `total_ontarget_variants`: Total number of variants detected that are within the target regions.
+  - `total_ontarget_snps`: Total number of SNPs detected that are within the target regions.
+  - `total_ontarget_indels`: Total number of indels detected that are within the target regions.
+  - `total_variants_vaf_gt0.5`: Total number of variants with a variant allele fraction (VAF) greater than 0.5.
+  - `total_snps_vaf_gt0.5`: Total number of SNPs with a VAF greater than 0.5.
+  - `total_indels_vaf_gt0.5`: Total number of indels with a VAF greater than 0.5.
+  - `total_ontarget_variants_vaf_gt0.5`: Total number of on-target variants with a VAF greater than 0.5.
+  - `total_ontarget_snps_vaf_gt0.5`: Total number of on-target SNPs with a VAF greater than 0.5.
+  - `total_ontarget_indels_vaf_gt0.5`: Total number of on-target indels with a VAF greater than 0.5.
+
+- **The variant summary table (tsv) contains the following information**
+  - `Chr`: Chromosome.
+  - `Pos`: The position of the variant.
+  - `Ref`: The reference base.
+  - `Alt`: The alternate base.
+  - `is_on_target`: Indicates whether the variant is within the target region of interest.
+  - `Sample`: Sample ID.
+  - `GT:GQ:DP:AD:VAF:PL:PS`: This is taken from the FORMAT column of the VCF. Where `GT` is the Genotype, the inferred genetic state of the sample (homozygous reference, heterozygous, homozygous alternate). `GQ` is the Genotype Quality, a measure of confidence in the genotype call. `DP` is the Depth, the total number of reads covering the variant position. `AD` is the Allele Depth, the number of reads supporting each allele. `VAF` is the Variant Allele Fraction, the proportion of reads supporting the alternate allele. 
+  - `PL`: Phred-scaled likelihoods for genotypes as defined in the VCF specification.
+  - `PS`: Phase set, indicating variants that are in the same phased haplotype. [More details here](https://whatshap.readthedocs.io/en/latest/guide.html#phase-sets).
+  
+  > [!NOTE]
+  > VAF = AD_variant / (AD_reference + AD_variant) 
+  > `AD`           = Allele Depth, the number of reads supporting each allele.
+  > `AD_reference` = Number of reads supporting the reference allele.
+  > `AD_variant`   = Number of reads supporting the reference allele.
 
 ## Components
 
