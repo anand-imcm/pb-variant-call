@@ -6,6 +6,7 @@
 
 This repository contains a WDL-based workflow for variant calling and annotation using Hi-Fi reads. The workflow includes several steps such as alignment, variant calling, VCF filtering, VCF normalization, variant phasing, variant annotation, and structural variant calling.
 
+> [!TIP]
 > To import the workflow into your Terra workspace, click on the Dockstore badge, and select 'Terra' from the 'Launch with' widget on the Dockstore workflow page.
 
 ## Workflow Steps
