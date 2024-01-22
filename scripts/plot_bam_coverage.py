@@ -1,66 +1,73 @@
 import argparse
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-import numpy as np
-from scipy.interpolate import make_interp_spline
+import matplotlib.patches as patches
+import pandas as pd
 from matplotlib.ticker import FuncFormatter
+import seaborn as sns
 
 def parse_arguments():
     parser = argparse.ArgumentParser(prog='plot_bam_coverage.py', description='Create a coverage plot using output from samtools depth.')
     parser.add_argument('-d','--depth',type=str, help='Tab delimited file containing the depth at each position or region. (Output from: samtools depth alignment.bam > alignment.depth)', required=True)
-    parser.add_argument('-t','--target',type=str, help='Target region coordinates in bed format. (zero-based bed file without any header)', required=True)
+    parser.add_argument('-t','--target',type=str, help='Target region coordinates in bed format. (zero-based bed file without any header) This bed file will be used to highlight the genomic region on the plot.', required=True)
     parser.add_argument('-p','--prefix',type=str, help='Output prefix', required=True)
     return parser.parse_args()
 
-def read_depth_file(depth_file_path):
-    with open(depth_file_path, 'r') as depth_file:
-        data = [line.strip().split('\t') for line in depth_file]
-    return data
+def draw_genes_and_coverage(targets_df, cov_df, plot_file, plot_title):
+    fig, (ax_genes, ax_coverage) = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [1, 3]}, sharex=True)
+    targets_df = targets_df.sort_values(by="Start")
+    chromosome_positions = {}
 
-def read_bed_file(bed_file_path):
-    bed_intervals = []
-    bed_labels = []
-    with open(bed_file_path, 'r') as bed_file:
-        for line in bed_file:
-            fields = line.strip().split('\t')
-            bed_intervals.append((int(fields[1])+1, int(fields[2])))
-            bed_labels.append(fields[3])
-    return bed_intervals, bed_labels
+    for index, row in targets_df.iterrows():
+        chrom, start, end, gene_info, _, strand = row["Chr"], row["Start"], row["End"], row["Label"], row["Info"], row["Strand"]
+        
+        start, end = int(start), int(end)
 
-def plot_coverage(positions, coverage, bed_intervals, bed_labels, plot_file, plot_title):
-    smooth_positions = np.linspace(min(positions), max(positions), 300)
-    spl = make_interp_spline(positions, coverage, k=3)
-    smooth_coverage = spl(smooth_positions)
+        if chrom not in chromosome_positions:
+            chromosome_positions[chrom] = 0
+        y_position = chromosome_positions[chrom]
 
-    plt.figure(figsize=(10, 5))
-    plt.plot(smooth_positions, smooth_coverage, linestyle='-', color='b', label='Coverage')
-    plt.title(plot_title)
-    plt.xlabel('Position')
-    plt.ylabel('Depth')
-    plt.grid(True)
-    plt.ylim(0, max(smooth_coverage) * 1.1)
+        face_color = '#ADD8E6' if gene_info.startswith('GBA') else '#FFC0CB'
 
-    for i, interval in enumerate(bed_intervals):
-        x_formatter = FuncFormatter(lambda x, p: format(int(x), ','))
-        plt.gca().xaxis.set_major_formatter(x_formatter)
-        plt.gca().add_patch(Rectangle((interval[0], 0), interval[1] - interval[0], max(smooth_coverage), color='blue', alpha=0.2))
-        plt.text((interval[0] + interval[1]) / 2, max(smooth_coverage) * 0.9, bed_labels[i], ha='center', va='center', color='black')
+        rect = patches.Rectangle((start, y_position), end - start, 1, linewidth=1, edgecolor='black', facecolor=face_color)
+        
+        ax_genes.add_patch(rect)
+
+        ax_genes.text(start + (end - start) / 2, y_position + 0.5, gene_info, ha='center', va='center', fontsize=8, color='black')
+
+        chromosome_positions[chrom] += 1
+
+    ax_genes.set_title("Region")
+    x_axis_min = min(targets_df["Start"].min(), cov_df["Pos"].min()) - 5000
+    x_axis_max = max(targets_df["End"].max(), cov_df["Pos"].max()) + 5000
+    ax_genes.set_xlim(x_axis_min, x_axis_max)
+    ax_genes.set_ylim(0, max(chromosome_positions.values()) + 0.5)  # Adjust y-axis limits as needed
+    ax_genes.set_ylabel('Genes')
+    ax_genes.yaxis.set_visible(False)
+
+    ax_coverage.fill_between(cov_df['Pos'], cov_df['Depth'], alpha=0.3, color='gray')
+    ax_coverage.set_title(plot_title)
+    ax_coverage.set_xlabel("Position")
+    ax_coverage.set_ylabel("Depth")
+    ax_coverage.set_xlim(x_axis_min, x_axis_max)
+    ax_coverage.set_ylim(0, max(cov_df['Depth']))
+    
+    x_formatter = FuncFormatter(lambda x, p: format(int(x), ','))
+    ax_coverage.xaxis.set_major_formatter(x_formatter)
 
     plt.savefig(plot_file, dpi=300)
-    # plt.show()
 
 def main():
     args = parse_arguments()
+    
     plot_file = f'{args.prefix}_coverage_depth.png'
+    
     plot_title = f'{args.prefix} coverage'
 
-    data = read_depth_file(args.depth)
-    positions = [int(row[1]) for row in data]
-    coverage = [int(row[2]) for row in data]
+    targets = pd.read_csv(args.target, sep='\t', header=None, names=["Chr", "Start", "End", "Label", "Info", "Strand"])
+    
+    coverage = pd.read_csv(args.depth, sep='\t', header=None, names=["Chr", "Pos", "Depth"])
 
-    bed_intervals, bed_labels = read_bed_file(args.target)
-
-    plot_coverage(positions, coverage, bed_intervals, bed_labels, plot_file, plot_title)
+    draw_genes_and_coverage(targets, coverage, plot_file, plot_title)
 
 if __name__ == "__main__":
     main()

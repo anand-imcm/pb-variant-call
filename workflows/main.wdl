@@ -9,7 +9,7 @@ import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
-    String pipeline_version = "1.1.0"
+    String pipeline_version = "1.2.0"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
 
     input {
@@ -19,6 +19,7 @@ workflow main {
         File genome_index_pbmm
         File vep_cache
         File target_bed
+        File region_to_plot
     }
 
     parameter_meta {
@@ -51,7 +52,7 @@ workflow main {
     }
 
     call report.Summary {
-        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, file_label = prefix, docker = container_src
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, region_to_plot = region_to_plot, file_label = prefix, docker = container_src
     }
 
     output {

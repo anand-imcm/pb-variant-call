@@ -6,6 +6,7 @@ task Summary {
         File vcf
         File vcfSV
         File bed
+        File region_to_plot
         File depth
         File raw_hifi_reads_fastq_stats
         File raw_hifi_to_reference_alignment_log
@@ -59,7 +60,7 @@ task Summary {
         if [ $(wc -l < ~{depth}) -ne 0 ]; then
             python /scripts/plot_bam_coverage.py \
                 -d ~{depth} \
-                -t ~{bed} \
+                -t ~{region_to_plot} \
                 -p ~{file_label}
         fi
         
