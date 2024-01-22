@@ -38,7 +38,8 @@ The main inputs to the workflow are:
   - `genome_ref` : Human reference genome .fasta file. The version being used is GRCh38 release110 ([source](https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/)).
   - `genome_index_pbmm` : Reference index generated through pbmm2 in .mmi format.
   - `vep_cache` : VEP cache in .zip format. This [cache](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache) is required by the `VEP` tool for annotation. The version being used is [Ensembl GRCh38 release v110](https://ftp.ensembl.org/pub/release-110/variation/vep/homo_sapiens_vep_110_GRCh38.tar.gz).
-  - `target_bed` : "Coordinates for the target (amplified) regions. (0-based bed file). Ensembl/Gencode gene model is currently being used."
+  - `target_bed` : Coordinates for the target (amplified) regions (0-based bed file). This will be used to report the on-target and off-target variants. Ensembl/Gencode gene model is currently being used.
+  - `region_to_plot` : Bed file which contains all the genomic coordinates of MTX1, GBAP1, MTX1P1 and GBA1 for the depth of coverage plot.
 - **optional**
   - `vep_version` : The version of the VEP tool to use. Default value: `release_110.1`. This should be compatible with the `VEP` version.
   - `deepvariant_num_shards` : The number of shards to use when running DeepVariant. Default value : `12`.
