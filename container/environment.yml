@@ -16,4 +16,6 @@ dependencies:
 - pip
 - pip:
   - matplotlib
-  - numpy
+  - seaborn
+  - pyarrow
+  - pandas

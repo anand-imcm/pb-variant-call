@@ -182,7 +182,9 @@ The annotated VEP output is derived from the following parameters:
 
 - **Python packages**
   - matplotlib
-  - numpy
+  - seaborn
+  - pyarrow
+  - pandas
   - argparse
 - **Tools**
   - pbmm2
