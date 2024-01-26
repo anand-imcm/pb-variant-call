@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2022-01-26
+
+### Fixed
+- Summary module -> Improved file handling by checking if the input files exist and are non-empty before opening them.
+- Summary module -> Added proper closing of file handles after reading the files.
+
 ## [1.2.0] - 2022-01-22
 
 ### Added
