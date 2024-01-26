@@ -89,20 +89,22 @@ sub parse_sv {
     my ($sv_summ) = (@_);
     my %structural_variants;
     my $count_sv=0;
-
-    open (SV,"$sv_summ") or die("Cannot read table - $sv_summ: $!");
-    my $sv_header = <SV>;
-    chomp $sv_header;
-    my @header_sv=split("\t",$sv_header);
-    while(my $rec_sv=<SV>){
-        chomp $rec_sv;
-        # CHROM	POS	ID	REF	ALT	SAMPLE	GT:AD:DP:SAC
-        my @rec_sv_cols=split("\t",$rec_sv);
-        my $variantKey="$rec_sv_cols[0]:$rec_sv_cols[1]:$rec_sv_cols[3]>$rec_sv_cols[4]";
-        push @{$structural_variants{$variantKey}{'info'}}, $rec_sv_cols[-1];
-        push @{$structural_variants{$variantKey}{'SAM'}}, $rec_sv_cols[-2];
+    if (-s "$sv_summ"){
+        open (SV,"$sv_summ") or die("Cannot read table - $sv_summ: $!");
+        my $sv_header = <SV>;
+        chomp $sv_header;
+        my @header_sv=split("\t",$sv_header);
+        while(my $rec_sv=<SV>){
+            chomp $rec_sv;
+            # CHROM	POS	ID	REF	ALT	SAMPLE	GT:AD:DP:SAC
+            my @rec_sv_cols=split("\t",$rec_sv);
+            my $variantKey="$rec_sv_cols[0]:$rec_sv_cols[1]:$rec_sv_cols[3]>$rec_sv_cols[4]";
+            push @{$structural_variants{$variantKey}{'info'}}, $rec_sv_cols[-1];
+            push @{$structural_variants{$variantKey}{'SAM'}}, $rec_sv_cols[-2];
+        }
+        $count_sv = keys %structural_variants;
     }
-    $count_sv = keys %structural_variants;
+
     return($count_sv);
 }
 
@@ -116,42 +118,45 @@ sub parse_variants {
     my $count_indel=0;
     my $count_ontarget_snp=0;
     my $count_ontarget_indel=0;
-    my $header_info;
-
-    open (OT,"$tsv_ontarget") or die("Cannot read table - $tsv_ontarget: $!");
-    my $header_ontarget = <OT>;
-    chomp $header_ontarget;
-    my @header_ontarget=split("\t",$header_ontarget);
-    while(my $rec_ontarget=<OT>){
-        chomp $rec_ontarget;
-        # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
-        my @rec_ontarget_cols=split("\t",$rec_ontarget);
-        my $variantKey="$rec_ontarget_cols[0]:$rec_ontarget_cols[1]:$rec_ontarget_cols[3]>$rec_ontarget_cols[4]";
-        push @{$on_target{$variantKey}{'info'}}, $rec_ontarget_cols[-1];
-        push @{$on_target{$variantKey}{'SAM'}}, $rec_ontarget_cols[-2];
+    my $header_info="GT:GQ:DP:AD:VAF:PL:PS";
+    if (-s "$tsv_ontarget"){
+        open (OT,"$tsv_ontarget") or die("Cannot read table - $tsv_ontarget: $!");
+        my $header_ontarget = <OT>;
+        chomp $header_ontarget;
+        my @header_ontarget=split("\t",$header_ontarget);
+        while(my $rec_ontarget=<OT>){
+            chomp $rec_ontarget;
+            # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
+            my @rec_ontarget_cols=split("\t",$rec_ontarget);
+            my $variantKey="$rec_ontarget_cols[0]:$rec_ontarget_cols[1]:$rec_ontarget_cols[3]>$rec_ontarget_cols[4]";
+            push @{$on_target{$variantKey}{'info'}}, $rec_ontarget_cols[-1];
+            push @{$on_target{$variantKey}{'SAM'}}, $rec_ontarget_cols[-2];
+        }
+        close OT;
     }
 
-    open (ALL,"$tsv_all") or die("Cannot read table - $tsv_all: $!");
-    my $header_all = <ALL>;
-    chomp $header_all;
-    my @header_all=split("\t",$header_all);
-    $header_info = $header_all[-1];
-    while(my $rec_all=<ALL>){
-        chomp $rec_all;
-        # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
-        my @rec_all_cols=split("\t",$rec_all);
-        my $variantKey="$rec_all_cols[0]:$rec_all_cols[1]:$rec_all_cols[3]>$rec_all_cols[4]";
-        push @{$all_variants{$variantKey}{'info'}}, $rec_all_cols[-1];
-        push @{$all_variants{$variantKey}{'SAM'}}, $rec_all_cols[-2];
-        if (defined($on_target{$variantKey})) {
-            $all_variants{$variantKey}{'is_ontarget'} = "Y";
+    if (-s "$tsv_all"){
+        open (ALL,"$tsv_all") or die("Cannot read table - $tsv_all: $!");
+        my $header_all = <ALL>;
+        chomp $header_all;
+        my @header_all=split("\t",$header_all);
+        $header_info = $header_all[-1];
+        while(my $rec_all=<ALL>){
+            chomp $rec_all;
+            # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
+            my @rec_all_cols=split("\t",$rec_all);
+            my $variantKey="$rec_all_cols[0]:$rec_all_cols[1]:$rec_all_cols[3]>$rec_all_cols[4]";
+            push @{$all_variants{$variantKey}{'info'}}, $rec_all_cols[-1];
+            push @{$all_variants{$variantKey}{'SAM'}}, $rec_all_cols[-2];
+            if (defined($on_target{$variantKey})) {
+                $all_variants{$variantKey}{'is_ontarget'} = "Y";
+            }
+            else {
+                $all_variants{$variantKey}{'is_ontarget'}= "N";
+            }
         }
-        else {
-            $all_variants{$variantKey}{'is_ontarget'}= "N";
-        }
+        close ALL;
     }
-    close OT;
-    close ALL;
 
     foreach my $var(keys %all_variants){
         my %seen_i;
