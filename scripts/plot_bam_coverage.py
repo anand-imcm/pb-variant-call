@@ -65,7 +65,8 @@ def main():
 
     targets = pd.read_csv(args.target, sep='\t', header=None, names=["Chr", "Start", "End", "Label", "Info", "Strand"])
     
-    coverage = pd.read_csv(args.depth, sep='\t', header=None, names=["Chr", "Pos", "Depth"])
+    coverage = pd.read_csv(args.depth, sep='\t', header=None, names=["Chr", "Pos", "Depth"]).sort_values(by="Pos").reset_index(drop=True)
+
 
     draw_genes_and_coverage(targets, coverage, plot_file, plot_title)
 
