@@ -1,6 +1,10 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.2.2] - 2022-01-30
+
+### Fixed
+- Coverage plot artifacts -> Sort coverage data by position
 
 ## [1.2.1] - 2022-01-26
 
