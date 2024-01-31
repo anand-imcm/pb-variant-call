@@ -78,6 +78,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats
 
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary
+        File raw_hifi_to_reference_alignment_PASS_norm_phased_VEP_annotation = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_VEP_annotation
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants
         File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary
