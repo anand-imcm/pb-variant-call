@@ -1,6 +1,11 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.2.3] - 2022-01-31
+
+### Added
+- VEP annotated VCF to TSV -> Useful in filtering/sorting annotation data.
+
 ## [1.2.2] - 2022-01-30
 
 ### Fixed
