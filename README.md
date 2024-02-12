@@ -176,7 +176,7 @@ The annotated VEP output is derived from the following parameters:
 > VAF = AD_variant / (AD_reference + AD_variant) 
 > `AD`           = Allele Depth, the number of reads supporting each allele.
 > `AD_reference` = Number of reads supporting the reference allele.
-> `AD_variant`   = Number of reads supporting the reference allele.
+> `AD_variant`   = Number of reads supporting the variant allele.
 
 ## Components
 
