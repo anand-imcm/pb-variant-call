@@ -30,7 +30,7 @@ task PhaseVariants {
                 sample.bam \
                 --reference=genome_reference.fasta \
                 --indels \
-                --output ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
+                --output ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf
 
             # phasing stats
             whatshap stats \
