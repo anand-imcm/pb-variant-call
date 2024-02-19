@@ -59,6 +59,9 @@ task Summary {
             bcftools query -Hu -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%GT:%AD:%DP:%SAC]\n" ~{vcfSV} > ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv
             modified_header=$(head -n1 ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv | sed 's/\[[0-9]*\]//g; s/#//')
             sed -i "1s/.*/$modified_header/" ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv
+            sv_ann_headers="chrom\tpos\tID\tref\talt\tgenotype\tallele_depth\tread_depth\treads_support\tsv_type\tsv_end\tsv_length\tAllele\tConsequence\tIMPACT\tSYMBOL\tGene\tFeature_type\tFeature\tBIOTYPE\tEXON\tINTRON\tHGVSc\tHGVSp\tcDNA_position\tCDS_position\tProtein_position\tAmino_acids\tCodons\tExisting_variation\tDISTANCE\tSTRAND\tFLAGS\tSYMBOL_SOURCE\tHGNC_ID\tCANONICAL\tMANE_SELECT\tMANE_PLUS_CLINICAL\tCCDS\tENSP\tRefSeq\tSOURCE\tSIFT\tPolyPhen\tHGVS_OFFSET\tAF\tAFR_AF\tAMR_AF\tEAS_AF\tEUR_AF\tSAS_AF\tgnomADg_AF\tgnomADg_AFR_AF\tgnomADg_AMI_AF\tgnomADg_AMR_AF\tgnomADg_ASJ_AF\tgnomADg_EAS_AF\tgnomADg_FIN_AF\tgnomADg_MID_AF\tgnomADg_NFE_AF\tgnomADg_OTH_AF\tgnomADg_SAS_AF\tMAX_AF\tMAX_AF_POPS\tCLIN_SIG\tSOMATIC\tPHENO\tPUBMED\tClinVar\tClinVar_CLNSIG\tClinVar_CLNREVSTAT\tClinVar_CLNDN"
+            echo -e $sv_ann_headers > ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation.tsv
+            bcftools +split-vep ~{vcfSV} -f '%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%GT\t%AD\t%DP\t%SAC]\t%SVTYPE\t%END\t%SVLEN\t%CSQ\n' -d -A tab >> ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation.tsv
         fi
 
         if [ $(wc -l < ~{depth}) -ne 0 ]; then
@@ -85,6 +88,7 @@ task Summary {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_vep_annotated.vcf"
         File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary.tsv"
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv"
+        File raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation.tsv"
         File? coverage_depth_plot = file_label + "_coverage_depth.png"
         File variants_summary = file_label + "_variants_summary.tsv"
         File variants_vaf_gt0_5_summary = file_label + "_vaf_gt0.5_variants_summary.tsv"
