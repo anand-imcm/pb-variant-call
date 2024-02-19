@@ -8,6 +8,7 @@ task AnnotateVariants {
         File genome_reference
         String file_label
         String vep_version = "release_110.1"
+        Int vep_fork = 12
     }  
 
     command <<<
@@ -30,6 +31,7 @@ task AnnotateVariants {
                 --cache \
                 --dir_cache vep_cache/ \
                 --fasta genome_reference.fasta \
+                --fork ~{vep_fork} \
                 --numbers --offline --hgvs --shift_hgvs 0 --terms SO --symbol \
                 --sift b --polyphen b --total_length --ccds --canonical --biotype \
                 --protein --xref_refseq --mane --pubmed --af --max_af --af_1kg --af_gnomadg \
