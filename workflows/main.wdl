@@ -4,12 +4,13 @@ import "./tasks/align_hifi.wdl" as align
 import "./tasks/call_structural_variants.wdl" as svcall
 import "./tasks/call_variants.wdl" as varcall
 import "./tasks/annotate_variants.wdl" as annotate
+import "./tasks/annotate_structural_variants.wdl" as annotateSV
 import "./tasks/phase_variants.wdl" as phase
 import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
-    String pipeline_version = "1.2.3"
+    String pipeline_version = "1.2.4"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
 
     input {
@@ -42,6 +43,10 @@ workflow main {
     call svcall.CallStructuralVariants {
         input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
     }
+    
+    call annotateSV.AnnotateSVs {
+        input: vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
+    }
 
     call phase.PhaseVariants {
         input: vcf = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants, bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, bam_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
@@ -52,7 +57,7 @@ workflow main {
     }
 
     call report.Summary {
-        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, region_to_plot = region_to_plot, file_label = prefix, docker = container_src
+        input: vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants, vcfSV = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants, bed = target_bed, depth = AlignHifiReads.raw_hifi_to_reference_alignment_depth, raw_hifi_reads_fastq_stats = AlignHifiReads.raw_hifi_reads_fastq_stats, raw_hifi_to_reference_alignment_log = AlignHifiReads.raw_hifi_to_reference_alignment_log, region_to_plot = region_to_plot, file_label = prefix, docker = container_src
     }
 
     output {
@@ -65,6 +70,8 @@ workflow main {
         File raw_hifi_to_reference_alignment_structural_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_variants
         File raw_hifi_to_reference_alignment_structural_PASS_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_variants
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants
+        File raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants
+        File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats
 
         File raw_hifi_to_reference_alignment_all_variants_vcf = CallVariants.raw_hifi_to_reference_alignment_all_variants_vcf
         File raw_hifi_to_reference_alignment_all_variants_stats = CallVariants.raw_hifi_to_reference_alignment_all_variants_stats
@@ -82,6 +89,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants_vcf = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_ontarget_variants
         File raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_ontarget_variants_summary
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary
+        File raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation
         File? coverage_depth_plot = Summary.coverage_depth_plot
         File variants_summary = Summary.variants_summary
         File variants_vaf_gt0_5_summary = Summary.variants_vaf_gt0_5_summary

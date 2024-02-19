@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.2.4] - 2022-02-19
+
+### Added
+- VEP annotation for structural variants.
+- VEP annotated SV VCF to TSV -> Useful in filtering/sorting annotation data.
+- Github Actions upgrade
+
 ## [1.2.3] - 2022-01-31
 
 ### Added
