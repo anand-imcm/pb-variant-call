@@ -53,7 +53,7 @@ task Summary {
         fi
 
         if [ $(grep -v "#" ~{vcfSV} | wc -l) -eq 0 ]; then
-            touch ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv
+            touch ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation.tsv
         else
             # summary using structural variants
             bcftools query -Hu -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%GT:%AD:%DP:%SAC]\n" ~{vcfSV} > ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv
