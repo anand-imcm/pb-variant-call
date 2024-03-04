@@ -13,6 +13,7 @@ dependencies:
 - bcftools<=1.18
 - bedtools<=2.31
 - whatshap<=2.1
+- qualimap<=2.3
 - pip
 - pip:
   - matplotlib

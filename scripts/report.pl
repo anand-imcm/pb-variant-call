@@ -39,7 +39,7 @@ if ($help) {
 }
 
 my $unique_variant_summary=$prefix."_variants_summary.tsv";
-my $unique_VAF_gt0_5_variant_summary=$prefix."_vaf_gt0.5_variants_summary.tsv";
+my $unique_qual_gt30_variant_summary=$prefix."_QUAL_gt30_variants_summary.tsv";
 my $sequence_summary=$prefix."_sequence_summary.tsv";
 
 
@@ -62,17 +62,17 @@ if ($total_mapped_reads != 0){
 print "$prefix\t$fastq_stats{'num_seqs'}\t$fastq_stats{'sum_len'}\t$fastq_stats{'min_len'}\t$fastq_stats{'avg_len'}\t$fastq_stats{'max_len'}\t$fastq_stats{'Q1'}\t$fastq_stats{'Q2'}\t$fastq_stats{'Q3'}\t$fastq_stats{'sum_gap'}\t$fastq_stats{'N50'}\t$fastq_stats{'Q20%'}\t$fastq_stats{'Q30%'}\t$fastq_stats{'GC%'}\t$total_mapped_reads\t$total_unmapped_reads\t$alignment_perc\t$count_sv\t".scalar @variants_tab."\t$count_snp\t$count_indel\t$count_ontarget_vars\t$count_ontarget_snp\t$count_ontarget_indel\t".scalar @variants_filtered_tab."\t$count_filtered_snp\t$count_filtered_indel\t$count_filtered_ontarget_filtered_vars\t$count_filtered_ontarget_filtered_snp\t$count_filtered_ontarget_filtered_indel\n";
 
 open (SEQ,">$sequence_summary") or die("Cannot write to $sequence_summary");
-print SEQ "file\tfastq_num_seqs\tfastq_sum_len\tfastq_min_len\tfastq_avg_len\tfastq_max_len\tfastq_Q1\tfastq_Q2\tfastq_Q3\tfastq_sum_gap\tfastq_N50\tfastq_Q20(%)\tfastq_Q30(%)\tfastq_GC(%)\ttotal_mapped_reads\ttotal_unmapped_reads\ttotal_alignment%\ttotal_structural_variants\ttotal_variants\ttotal_snps\ttotal_indels\ttotal_ontarget_variants\ttotal_ontarget_snps\ttotal_ontarget_indels\ttotal_variants_vaf_gt0.5\ttotal_snps_vaf_gt0.5\ttotal_indels_vaf_gt0.5\ttotal_ontarget_variants_vaf_gt0.5\ttotal_ontarget_snps_vaf_gt0.5\ttotal_ontarget_indels_vaf_gt0.5\n";
+print SEQ "file\tfastq_num_seqs\tfastq_sum_len\tfastq_min_len\tfastq_avg_len\tfastq_max_len\tfastq_Q1\tfastq_Q2\tfastq_Q3\tfastq_sum_gap\tfastq_N50\tfastq_Q20(%)\tfastq_Q30(%)\tfastq_GC(%)\ttotal_mapped_reads\ttotal_unmapped_reads\ttotal_alignment%\ttotal_structural_variants\ttotal_variants\ttotal_snps\ttotal_indels\ttotal_ontarget_variants\ttotal_ontarget_snps\ttotal_ontarget_indels\ttotal_variants_qual_gt30\ttotal_snps_qual_gt30\ttotal_indels_qual_gt30\ttotal_ontarget_variants_qual_gt30\ttotal_ontarget_snps_qual_gt30\ttotal_ontarget_indels_qual_gt30\n";
 print SEQ "$prefix\t$fastq_stats{'num_seqs'}\t$fastq_stats{'sum_len'}\t$fastq_stats{'min_len'}\t$fastq_stats{'avg_len'}\t$fastq_stats{'max_len'}\t$fastq_stats{'Q1'}\t$fastq_stats{'Q2'}\t$fastq_stats{'Q3'}\t$fastq_stats{'sum_gap'}\t$fastq_stats{'N50'}\t$fastq_stats{'Q20%'}\t$fastq_stats{'Q30%'}\t$fastq_stats{'GC%'}\t$total_mapped_reads\t$total_unmapped_reads\t$alignment_perc\t$count_sv\t".scalar @variants_tab."\t$count_snp\t$count_indel\t$count_ontarget_vars\t$count_ontarget_snp\t$count_ontarget_indel\t".scalar @variants_filtered_tab."\t$count_filtered_snp\t$count_filtered_indel\t$count_filtered_ontarget_filtered_vars\t$count_filtered_ontarget_filtered_snp\t$count_filtered_ontarget_filtered_indel\n";
 close SEQ;
 
 write_variants($unique_variant_summary,$header_info,@variants_tab);
-write_variants($unique_VAF_gt0_5_variant_summary,$header_filtered_info,@variants_filtered_tab);
+write_variants($unique_qual_gt30_variant_summary,$header_filtered_info,@variants_filtered_tab);
 
 sub write_variants {
     my ($out_file,$header,@variants) = (@_);
     open (TMP,">temp.summary.tsv") or die("Cannot write to - temp.summary.tsv");
-    print TMP "Chr\tPos\tRef\tAlt\tis_on_target\tSample\t$header\n";
+    print TMP "Chr\tPos\tRef\tAlt\tQual\tFilter\tis_on_target\tSample\t$header\n";
     print TMP join("\n",@variants)."\n";
     close TMP;
 
@@ -126,11 +126,13 @@ sub parse_variants {
         my @header_ontarget=split("\t",$header_ontarget);
         while(my $rec_ontarget=<OT>){
             chomp $rec_ontarget;
-            # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
+            # CHROM   POS     ID      REF     ALT     QUAL    FILTER  SAMPLE  GT:GQ:DP:AD:VAF:PL:PS
             my @rec_ontarget_cols=split("\t",$rec_ontarget);
             my $variantKey="$rec_ontarget_cols[0]:$rec_ontarget_cols[1]:$rec_ontarget_cols[3]>$rec_ontarget_cols[4]";
             push @{$on_target{$variantKey}{'info'}}, $rec_ontarget_cols[-1];
             push @{$on_target{$variantKey}{'SAM'}}, $rec_ontarget_cols[-2];
+            push @{$on_target{$variantKey}{'FILTER'}}, $rec_ontarget_cols[-3];
+            push @{$on_target{$variantKey}{'QUAL'}}, $rec_ontarget_cols[-4];
         }
         close OT;
     }
@@ -143,11 +145,13 @@ sub parse_variants {
         $header_info = $header_all[-1];
         while(my $rec_all=<ALL>){
             chomp $rec_all;
-            # CHROM	POS	ID	REF	ALT	SAMPLE	GT:GQ:DP:AD:VAF:PL:PS
+            # CHROM   POS     ID      REF     ALT     QUAL    FILTER  SAMPLE  GT:GQ:DP:AD:VAF:PL:PS
             my @rec_all_cols=split("\t",$rec_all);
             my $variantKey="$rec_all_cols[0]:$rec_all_cols[1]:$rec_all_cols[3]>$rec_all_cols[4]";
             push @{$all_variants{$variantKey}{'info'}}, $rec_all_cols[-1];
             push @{$all_variants{$variantKey}{'SAM'}}, $rec_all_cols[-2];
+            push @{$all_variants{$variantKey}{'FILTER'}}, $rec_all_cols[-3];
+            push @{$all_variants{$variantKey}{'QUAL'}}, $rec_all_cols[-4];
             if (defined($on_target{$variantKey})) {
                 $all_variants{$variantKey}{'is_ontarget'} = "Y";
             }
@@ -164,7 +168,7 @@ sub parse_variants {
         my @unique_info = grep { !$seen_i{$_}++ } @{$all_variants{$var}{'info'}};
         my @unique_BCSQ = grep { !$seen_b{$_}++ } @{$all_variants{$var}{'SAM'}};
         my ($chr,$pos,$ref,$alt) = split(/[:>]/, $var);
-        my $var_string = "$chr\t$pos\t$ref\t$alt\t$all_variants{$var}{'is_ontarget'}\t".join(",",@unique_BCSQ)."\t".join(",",@unique_info);
+        my $var_string = "$chr\t$pos\t$ref\t$alt\t$all_variants{$var}{'QUAL'}[0]\t$all_variants{$var}{'FILTER'}[0]\t$all_variants{$var}{'is_ontarget'}\t".join(",",@unique_BCSQ)."\t".join(",",@unique_info);
         if (length($ref) == 1 && length($alt) == 1){
             $count_snp++;
         }

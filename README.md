@@ -154,18 +154,20 @@ The annotated VEP output is derived from the following parameters:
   - `total_ontarget_variants`: Total number of variants detected that are within the target regions.
   - `total_ontarget_snps`: Total number of SNPs detected that are within the target regions.
   - `total_ontarget_indels`: Total number of indels detected that are within the target regions.
-  - `total_variants_vaf_gt0.5`: Total number of variants with a variant allele fraction (VAF) greater than 0.5.
-  - `total_snps_vaf_gt0.5`: Total number of SNPs with a VAF greater than 0.5.
-  - `total_indels_vaf_gt0.5`: Total number of indels with a VAF greater than 0.5.
-  - `total_ontarget_variants_vaf_gt0.5`: Total number of on-target variants with a VAF greater than 0.5.
-  - `total_ontarget_snps_vaf_gt0.5`: Total number of on-target SNPs with a VAF greater than 0.5.
-  - `total_ontarget_indels_vaf_gt0.5`: Total number of on-target indels with a VAF greater than 0.5.
+  - `total_variants_qual_gt30`: Total number of variants with a variant QUAL greater than 30.
+  - `total_snps_qual_gt30`: Total number of SNPs with QUAL greater than 30.
+  - `total_indels_qual_gt30`: Total number of indels with QUAL greater than 30.
+  - `total_ontarget_variants_qual_gt30`: Total number of on-target variants with QUAL greater than 30.
+  - `total_ontarget_snps_qual_gt30`: Total number of on-target SNPs with QUAL greater than 30.
+  - `total_ontarget_indels_qual_gt30`: Total number of on-target indels with QUAL greater than 30.
 
 - **The variant summary table (tsv) contains the following information**
   - `Chr`: Chromosome.
   - `Pos`: The position of the variant.
   - `Ref`: The reference base.
   - `Alt`: The alternate base.
+  - `Qual`: QUAL is the Phred-scaled probability that the site has no variant. Example: `QUAL=20`: 1 % chance that there is no variant at the site. `QUAL=50`: 1 in 1e5 chance that there is no variant at the site.
+  - `Filter`: : PASS if this position has passed all filters, i.e., a call is made at this position.
   - `is_on_target`: Indicates whether the variant is within the target region of interest.
   - `Sample`: Sample ID.
   - `GT:GQ:DP:AD:VAF:PL:PS`: This is taken from the FORMAT column of the VCF. Where `GT` is the Genotype, the inferred genetic state of the sample (homozygous reference, heterozygous, homozygous alternate). `GQ` is the Genotype Quality, a measure of confidence in the genotype call. `DP` is the Depth, the total number of reads covering the variant position. `AD` is the Allele Depth, the number of reads supporting each allele. `VAF` is the Variant Allele Fraction, the proportion of reads supporting the alternate allele. 
@@ -177,6 +179,10 @@ The annotated VEP output is derived from the following parameters:
 > `AD`           = Allele Depth, the number of reads supporting each allele.
 > `AD_reference` = Number of reads supporting the reference allele.
 > `AD_variant`   = Number of reads supporting the variant allele.
+
+> `QUAL` - quality: Phred-scaled quality score for the assertion made in ALT. i.e. −10log10 prob(call in ALT is wrong). If ALT is ‘.’ (no variant) then this is −10log10 prob(variant), and if ALT is not ‘.’ this is −10log10 prob(no variant). If unknown, the missing value should be specified. (Numeric)
+
+> `FILTER` - filter status: PASS if this position has passed all filters, i.e., a call is made at this position. Otherwise, if the site has not passed all filters, a semicolon-separated list of codes for filters that fail. e.g. “q10;s50” might indicate that at this site the quality is below 10 and the number of samples with data is below 50% of the total number of samples. ‘0’ is reserved and should not be used as a filter String. If filters have not been applied, then this field should be set to the missing value. (String, no whitespace or semicolons permitted)
 
 ## Components
 

@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.2.5] - 2022-02-19
+
+### Added
+- Variant Filter based on QUAL > 30
+- Filtered variants summary module now generates a variant-level summary .tsv file for all the variants based on the new filter criteria.#
+- VAF summary removed.
+
 ## [1.2.4] - 2022-02-19
 
 ### Added

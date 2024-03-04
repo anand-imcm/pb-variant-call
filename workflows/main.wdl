@@ -10,7 +10,7 @@ import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
-    String pipeline_version = "1.2.4"
+    String pipeline_version = "1.2.5"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
 
     input {
@@ -92,7 +92,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation
         File? coverage_depth_plot = Summary.coverage_depth_plot
         File variants_summary = Summary.variants_summary
-        File variants_vaf_gt0_5_summary = Summary.variants_vaf_gt0_5_summary
+        File variants_qual_gt30_summary = Summary.variants_qual_gt30_summary
         File sequence_summary = Summary.sequence_summary
     }
 
