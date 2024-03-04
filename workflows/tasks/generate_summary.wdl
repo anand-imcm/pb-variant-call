@@ -12,7 +12,7 @@ task Summary {
         File raw_hifi_to_reference_alignment_log
         String file_label
         String docker
-    }  
+    }
 
     command <<<
         set -euo pipefail
