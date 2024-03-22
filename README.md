@@ -78,7 +78,7 @@ The main output files are listed below:
   - `Structural_PASS_norm_variants_summary`: List of structural variants (tab delimited text).
   - `coverage_depth_plot`: Plot of coverage depth (png).
   - `variants_summary`: Summary of all variants (tab delimited text).
-  - `variants_vaf_gt0.5_summary`: Summary of all variants after filtering by variant allele fraction (VAF<0.5) (tab delimited text).
+  - `variants_qual_gt30_summary`: Summary of all variants after filtering by variant QUAL > 30.
   - `sequence_summary`: Summary reads and total variants found in the sample (tab delimited text).
 
 ## Detailed Description of Annotation and Summary Outputs
