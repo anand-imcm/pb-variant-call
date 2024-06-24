@@ -16,7 +16,11 @@ task AlignHifiReads {
 
         ln -s ~{pbmm2_index} genome_reference.mmi
 
-        gunzip -c ~{hifi_reads_fastq_gz} > ~{file_label}.hifi_reads.fastq
+        if [[ "~{hifi_reads_fastq_gz}" == *.fastq.gz ]]; then
+            gunzip -c ~{hifi_reads_fastq_gz} > ~{file_label}.hifi_reads.fastq
+        else
+            ln -s ~{hifi_reads_fastq_gz} ~{file_label}.hifi_reads.fastq
+        fi
 
         pbmm2 align \
             --preset hifi \
