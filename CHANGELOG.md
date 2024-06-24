@@ -1,37 +1,49 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.2.5] - 2022-02-19
+
+## [1.2.6] - 2024-02-19
+
+### Fixed
+
+- Input to accept both fastq.gz and .fastq file format to the workflow.
+
+## [1.2.5] - 2024-02-19
 
 ### Added
+
 - Variant Filter based on QUAL > 30
 - Filtered variants summary module now generates a variant-level summary .tsv file for all the variants based on the new filter criteria.#
 - VAF summary removed.
 
-## [1.2.4] - 2022-02-19
+## [1.2.4] - 2024-02-19
 
 ### Added
+
 - VEP annotation for structural variants.
 - VEP annotated SV VCF to TSV -> Useful in filtering/sorting annotation data.
 - Github Actions upgrade
 
-## [1.2.3] - 2022-01-31
+## [1.2.3] - 2024-01-31
 
 ### Added
+
 - VEP annotated VCF to TSV -> Useful in filtering/sorting annotation data.
 
-## [1.2.2] - 2022-01-30
+## [1.2.2] - 2024-01-30
 
 ### Fixed
+
 - Coverage plot artifacts -> Sort coverage data by position
 
-## [1.2.1] - 2022-01-26
+## [1.2.1] - 2024-01-26
 
 ### Fixed
+
 - Summary module -> Improved file handling by checking if the input files exist and are non-empty before opening them.
 - Summary module -> Added proper closing of file handles after reading the files.
 
-## [1.2.0] - 2022-01-22
+## [1.2.0] - 2024-01-22
 
 ### Added
 
