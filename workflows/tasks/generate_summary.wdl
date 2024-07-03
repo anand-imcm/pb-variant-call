@@ -65,13 +65,16 @@ task Summary {
         fi
 
         if [ $(wc -l < ~{depth}) -ne 0 ]; then
-            python /scripts/plot_bam_coverage.py \
+            python /home/anand/Documents/aspire-files/data-oxford/terra.bio/pb-variant-call/scripts/plot_bam_coverage.py \
                 -d ~{depth} \
                 -t ~{region_to_plot} \
                 -p ~{file_label}
+            perl /home/anand/Documents/aspire-files/data-oxford/terra.bio/pb-variant-call/scripts/getBamDepth \
+                --bed ~{bed} \
+                --depth ~{depth} > ~{file_label}_depth_summary.tsv
         fi
         
-        perl /scripts/report.pl \
+        perl /home/anand/Documents/aspire-files/data-oxford/terra.bio/pb-variant-call/scripts/report.pl \
             --fastq ~{raw_hifi_reads_fastq_stats} \
             --pbmmlog ~{raw_hifi_to_reference_alignment_log} \
             --allVariants ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary.tsv \
@@ -96,7 +99,7 @@ task Summary {
     }
     
     runtime {
-        docker: "~{docker}"
+        # docker: "~{docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }
