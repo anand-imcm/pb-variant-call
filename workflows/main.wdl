@@ -10,7 +10,7 @@ import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
-    String pipeline_version = "1.2.6"
+    String pipeline_version = "1.2.7"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
 
     input {

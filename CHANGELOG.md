@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.2.6] - 2024-02-19
+## [1.2.7] - 2024-07-03
+
+### Added
+
+- Script to generate a summary table for depth of coverage per gene.
+
+## [1.2.6] - 2024-06-24
 
 ### Fixed
 
