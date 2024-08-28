@@ -91,6 +91,7 @@ workflow main {
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary
         File raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation = Summary.raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation
         File? coverage_depth_plot = Summary.coverage_depth_plot
+        File? coverage_depth_summary = Summary.coverage_depth_summary
         File variants_summary = Summary.variants_summary
         File variants_qual_gt30_summary = Summary.variants_qual_gt30_summary
         File sequence_summary = Summary.sequence_summary

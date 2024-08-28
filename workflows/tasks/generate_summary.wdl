@@ -72,6 +72,7 @@ task Summary {
             perl /scripts/getBamDepth \
                 --bed ~{bed} \
                 --depth ~{depth} > ~{file_label}_depth_summary.tsv
+            sed -i 's/_raw_hifi_to_reference_alignment_depth//g' ~{file_label}_depth_summary.tsv
         fi
         
         perl /scripts/report.pl \
@@ -93,6 +94,7 @@ task Summary {
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants_summary.tsv"
         File raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_VEP_annotation.tsv"
         File? coverage_depth_plot = file_label + "_coverage_depth.png"
+        File? coverage_depth_summary = file_label + "_depth_summary.tsv"
         File variants_summary = file_label + "_variants_summary.tsv"
         File variants_qual_gt30_summary = file_label + "_QUAL_gt30_variants_summary.tsv"
         File sequence_summary = file_label + "_sequence_summary.tsv"
