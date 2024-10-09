@@ -7,7 +7,7 @@ task AnnotateVariants {
         File vep_cache
         File genome_reference
         String file_label
-        String vep_version = "release_110.1"
+        String vep_docker = "ensemblorg/ensembl-vep:release_110.1"
         Int vep_fork = 12
     }  
 
@@ -45,7 +45,7 @@ task AnnotateVariants {
     }
 
     runtime {
-        docker: "ensemblorg/ensembl-vep:~{vep_version}"
+        docker: "~{vep_docker}"
         memory: "32G"
         disks: "local-disk 40 HDD"
     }

@@ -7,7 +7,7 @@ task CallVariants {
         File raw_hifi_to_reference_alignment_index
         File genome_reference
         String file_label
-        String deepvariant_version = "1.5.0"
+        String deepvariant_docker = "google/deepvariant:1.5.0"
         Int deepvariant_num_shards = 12
     }  
 
@@ -48,7 +48,7 @@ task CallVariants {
     }
 
     runtime {
-        docker: "google/deepvariant:~{deepvariant_version}"
+        docker: "~{deepvariant_docker}"
         memory: "32G"
         disks: "local-disk 30 HDD"
     }

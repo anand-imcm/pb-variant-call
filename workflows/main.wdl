@@ -12,6 +12,8 @@ workflow main {
 
     String pipeline_version = "1.2.7"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
+    String vep_docker = "ghcr.io/anand-imcm/ensembl-vep:release_110.1"
+    String deepvariant_docker = "ghcr.io/anand-imcm/deepvariant:1.5.0"
 
     input {
         File reads_fastq_gz
@@ -37,7 +39,7 @@ workflow main {
     }
 
     call varcall.CallVariants {
-        input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix
+        input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, deepvariant_docker = deepvariant_docker
     }
 
     call svcall.CallStructuralVariants {
@@ -45,7 +47,7 @@ workflow main {
     }
     
     call annotateSV.AnnotateSVs {
-        input: vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
+        input: vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
     }
 
     call phase.PhaseVariants {
@@ -53,7 +55,7 @@ workflow main {
     }
     
     call annotate.AnnotateVariants {
-        input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix
+        input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
     }
 
     call report.Summary {
