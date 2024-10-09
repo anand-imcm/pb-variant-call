@@ -2,11 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.2.7] - 2024-07-03
+## [1.2.7] - 2024-10-09
 
 ### Added
 
 - Script to generate a summary table for depth of coverage per gene.
+
+### Updated
+
+- Docker registry from DockerHub to GitHub to avoid DockerHub's rate limit restrictions.
 
 ## [1.2.6] - 2024-06-24
 
@@ -19,7 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Variant Filter based on QUAL > 30
-- Filtered variants summary module now generates a variant-level summary .tsv file for all the variants based on the new filter criteria.#
+- Filtered variants summary module now generates a variant-level summary .tsv file for all the variants based on the new filter criteria.
 - VAF summary removed.
 
 ## [1.2.4] - 2024-02-19
