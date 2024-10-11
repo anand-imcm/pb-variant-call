@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Updated
 
 - Docker registry from DockerHub to GitHub to avoid DockerHub's rate limit restrictions.
+- Dynamic runtime and bootdisk for handling `PAPI error code 9`.
 
 ## [1.2.6] - 2024-06-24
 
