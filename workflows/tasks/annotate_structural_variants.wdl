@@ -9,7 +9,11 @@ task AnnotateSVs {
         String file_label
         String vep_docker = "ensemblorg/ensembl-vep:release_110.1"
         Int vep_fork = 12
+        Int memory_gb = 24
+        Int cpu = 16
     }  
+
+    Int disk_size_gb = ceil(size([vep_cache, genome_reference], "GB")) * 2
 
     command <<<
         set -euo pipefail
@@ -46,7 +50,8 @@ task AnnotateSVs {
 
     runtime {
         docker: "~{vep_docker}"
-        memory: "32G"
-        disks: "local-disk 40 HDD"
+        cpu: "~{cpu}"
+        memory: "~{memory_gb}GB"
+        disks: "local-disk ~{disk_size_gb} HDD"
     }
 }

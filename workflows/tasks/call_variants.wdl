@@ -9,7 +9,11 @@ task CallVariants {
         String file_label
         String deepvariant_docker = "google/deepvariant:1.5.0"
         Int deepvariant_num_shards = 12
+        Int memory_gb = 24
+        Int cpu = 16
     }  
+
+    Int disk_size_gb = ceil(size([raw_hifi_to_reference_alignment_bam, genome_reference], "GB")) * 2
 
     command <<<
         set -euo pipefail
@@ -49,7 +53,9 @@ task CallVariants {
 
     runtime {
         docker: "~{deepvariant_docker}"
-        memory: "32G"
-        disks: "local-disk 30 HDD"
+        bootDiskSizeGb: 15
+        cpu: "~{cpu}"
+        memory: "~{memory_gb}GB"
+        disks: "local-disk ~{disk_size_gb} HDD"
     }
 }
