@@ -39,7 +39,7 @@ task AnnotateSVs {
                 --fork ~{vep_fork} \
                 --numbers --offline --hgvs --shift_hgvs 0 --terms SO --symbol \
                 --sift b --polyphen b --total_length --ccds --canonical --biotype \
-                --xref_refseq --mane --pubmed --af --max_af --af_1kg --af_gnomadg \
+                --protein --xref_refseq --mane --pubmed --af --max_af --af_1kg --af_gnomadg \
                 --custom file=vep_cache/clinvar.vcf.gz,short_name=ClinVar,format=vcf,type=exact,coords=0,fields=CLNSIG%CLNREVSTAT%CLNDN
         fi
     >>>
