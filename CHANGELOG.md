@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.8] - 2025-03-19
+
+### Upgraded
+
+- Variant caller: `deepvariant:1.8.0`
+- Annotator: `ensembl-vep:release_113.3`
+- Annotation source: `Ensembl release 113` (Produces both RefSeq and Ensembl annoations)
+- ClinVar: `release 2025-03-12`
+
+### Fixed
+
+- Summary script to handle the updated VEP annotation fields.
+
 ## [1.2.7] - 2024-10-11
 
 ### Added

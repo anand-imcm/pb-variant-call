@@ -32,10 +32,11 @@ task CallVariants {
         else
             /opt/deepvariant/bin/run_deepvariant \
                 --model_type PACBIO \
-                --num_shards ~{deepvariant_num_shards} \
+                --vcf_stats_report=true \
+                --num_shards $(nproc) \
                 --ref genome_reference.fasta \
                 --reads ~{file_label}_raw_hifi_to_reference_alignment.bam \
-                --output_vcf  ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz
+                --output_vcf ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz
 
             # bcftools filter PASS variants
             bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_all_variants.vcf.gz -Oz -o ~{file_label}_raw_hifi_to_reference_alignment_PASS_variants.vcf.gz

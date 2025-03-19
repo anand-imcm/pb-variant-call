@@ -34,6 +34,7 @@ task AnnotateVariants {
                 --stats_text \
                 --cache \
                 --dir_cache vep_cache/ \
+                --merged \
                 --fasta genome_reference.fasta \
                 --fork ~{vep_fork} \
                 --numbers --offline --hgvs --shift_hgvs 0 --terms SO --symbol \

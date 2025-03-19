@@ -10,10 +10,10 @@ import "./tasks/generate_summary.wdl" as report
 
 workflow main {
 
-    String pipeline_version = "1.2.7"
+    String pipeline_version = "1.2.8"
     String container_src = "ghcr.io/anand-imcm/pb-variant-call:~{pipeline_version}"
-    String vep_docker = "ghcr.io/anand-imcm/ensembl-vep:release_110.1"
-    String deepvariant_docker = "ghcr.io/anand-imcm/deepvariant:1.5.0"
+    String vep_docker = "ghcr.io/anand-imcm/ensembl-vep:release_113.3"
+    String deepvariant_docker = "ghcr.io/anand-imcm/deepvariant:1.8.0"
 
     input {
         File reads_fastq_gz
