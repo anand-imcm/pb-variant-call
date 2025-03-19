@@ -8,9 +8,9 @@ dependencies:
 - bzip2
 - pbmm2<=1.13
 - seqkit<=2.5.1
-- samtools<=1.18
+- samtools
 - pbsv<=2.9.0
-- bcftools<=1.18
+- bcftools
 - bedtools<=2.31
 - whatshap<=2.1
 - qualimap<=2.3
