@@ -13,7 +13,7 @@ task AnnotateSVs {
         Int cpu = 16
     }  
 
-    Int disk_size_gb = ceil(size([vep_cache, genome_reference], "GB")) * 2
+    Int disk_size_gb = ceil(size([vep_cache, genome_reference, vcf], "GB")) * 3
 
     command <<<
         set -euo pipefail
