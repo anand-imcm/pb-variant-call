@@ -89,17 +89,16 @@ The following annotation sources are currently being used by VEP:
 
 - 1000 Genomes Project: phase3
 - Assembly: GRCh38.p14
-- COSMIC: 97
-- ClinVar: 202301
-- GENCODE: 44
-- Genebuild: 2014-07
+- COSMIC: 99
+- ClinVar: 2025-03-12
+- GENCODE: 47
 - HGMD-PUBLIC: 20204
 - PolyPhen: 2.2.3
 - Regbuild: 1.0
 - SIFT: 6.2.1
-- dbSNP: 154
-- gnomAD exomes: r2.1.1
-- gnomAD genomes: v3.1.2
+- dbSNP: 156
+- gnomAD exomes: v4.1
+- gnomAD genomes: v4.1
 
 The annotated VEP output is derived from the following parameters:
 
