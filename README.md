@@ -35,18 +35,17 @@ The main inputs to the workflow are:
 - **required**
   - `reads_fastq_gz` : Input PacBio HiFi reads in .fastq.gz format.
   - `prefix` : Sample name. This will be used as prefix for all the output files.
-  - `genome_ref` : Human reference genome .fasta file. The version being used is GRCh38 release110 ([source](https://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/)).
+  - `genome_ref` : Human reference genome .fasta file. The version being used is GRCh38 release113 ([source](https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/)).
   - `genome_index_pbmm` : Reference index generated through pbmm2 in .mmi format.
-  - `vep_cache` : VEP cache in .zip format. This [cache](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache) is required by the `VEP` tool for annotation. The version being used is [Ensembl GRCh38 release v110](https://ftp.ensembl.org/pub/release-110/variation/vep/homo_sapiens_vep_110_GRCh38.tar.gz).
+  - `vep_cache` : VEP cache in .zip format. This [cache](https://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html#cache) is required by the `VEP` tool for annotation. The version being used is [Ensembl GRCh38 release v113](https://ftp.ensembl.org/pub/release-113/gtf/homo_sapiens/Homo_sapiens.GRCh38.113.gtf.gz).
   - `target_bed` : Coordinates for the target (amplified) regions (0-based bed file). This will be used to report the on-target and off-target variants. Ensembl/Gencode gene model is currently being used.
   - `region_to_plot` : Bed file which contains all the genomic coordinates of MTX1, GBAP1, MTX1P1 and GBA1 for the depth of coverage plot.
 - **optional**
-  - `vep_version` : The version of the VEP tool to use. Default value: `release_110.1`. This should be compatible with the `VEP` version.
-  - `deepvariant_num_shards` : The number of shards to use when running DeepVariant. Default value : `12`.
-  - `deepvariant_version` : The version of the DeepVariant tool to use. Default value: `1.5.0`.
+  - `vep_version` : The version of the VEP tool to use. Default value: `release_113.3`. This should be compatible with the `VEP` version.
+  - `deepvariant_version` : The version of the DeepVariant tool to use. Default value: `1.8.0`.
 
 > [!NOTE]
-> A custom `vep_cache.zip` file has been created which contains: [Ensembl GRCh38 release v110](https://ftp.ensembl.org/pub/release-110/variation/vep/homo_sapiens_vep_110_GRCh38.tar.gz) (extracted), [clinvar.vcf.gz](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz) and [clinvar.vcf.gz.tbi](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz.tbi)
+> A custom `vep_cache.zip` file has been created which contains: [Ensembl GRCh38 release v113 refseq merged cache](https://ftp.ensembl.org/pub/release-113/variation/indexed_vep_cache/homo_sapiens_merged_vep_113_GRCh38.tar.gz) (extracted), [clinvar.vcf.gz](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz) and [clinvar.vcf.gz.tbi](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz.tbi)
 
 ## Outputs
 
