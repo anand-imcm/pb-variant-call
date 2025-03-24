@@ -3,8 +3,8 @@ version 1.0
 task Summary {
     
     input {
-        File vcf
-        File vcfSV
+        File? vcf
+        File? vcfSV
         File bed
         File region_to_plot
         File depth

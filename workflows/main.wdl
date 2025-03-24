@@ -45,17 +45,21 @@ workflow main {
     call svcall.CallStructuralVariants {
         input: raw_hifi_to_reference_alignment_bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, raw_hifi_to_reference_alignment_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
     }
-    
-    call annotateSV.AnnotateSVs {
-        input: vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
+
+    if (CallStructuralVariants.ann){
+        call annotateSV.AnnotateSVs {
+            input: vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
+        }
     }
 
     call phase.PhaseVariants {
         input: vcf = CallVariants.raw_hifi_to_reference_alignment_PASS_norm_variants, bam = AlignHifiReads.raw_hifi_to_reference_alignment_bam, bam_index = AlignHifiReads.raw_hifi_to_reference_alignment_index, genome_reference = genome_ref, file_label = prefix, docker = container_src
     }
     
-    call annotate.AnnotateVariants {
-        input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
+    if (PhaseVariants.ann){
+        call annotate.AnnotateVariants {
+            input: vcf = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants, vep_cache = vep_cache, genome_reference = genome_ref, file_label = prefix, vep_docker = vep_docker
+        }
     }
 
     call report.Summary {
@@ -72,8 +76,8 @@ workflow main {
         File raw_hifi_to_reference_alignment_structural_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_variants
         File raw_hifi_to_reference_alignment_structural_PASS_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_variants
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vcf = CallStructuralVariants.raw_hifi_to_reference_alignment_structural_PASS_norm_variants
-        File raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants
-        File raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats
+        File? raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_annotated_variants
+        File? raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats = AnnotateSVs.raw_hifi_to_reference_alignment_structural_PASS_norm_variants_vep_stats
 
         File raw_hifi_to_reference_alignment_all_variants_vcf = CallVariants.raw_hifi_to_reference_alignment_all_variants_vcf
         File raw_hifi_to_reference_alignment_all_variants_stats = CallVariants.raw_hifi_to_reference_alignment_all_variants_stats
@@ -83,8 +87,8 @@ workflow main {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants
         File raw_hifi_to_reference_alignment_PASS_norm_phased_stats = PhaseVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_stats
 
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants
-        File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats
+        File? raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants_vcf = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_annotated_variants
+        File? raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats = AnnotateVariants.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_vep_stats
 
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_variants_summary
         File raw_hifi_to_reference_alignment_PASS_norm_phased_VEP_annotation = Summary.raw_hifi_to_reference_alignment_PASS_norm_phased_VEP_annotation

@@ -37,12 +37,18 @@ task CallStructuralVariants {
         bcftools view -f PASS ~{file_label}_raw_hifi_to_reference_alignment_structural_variants.vcf -Ov -o ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf
         # bcftools norm and split bialleleic sites
         bcftools norm ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf -f genome_reference.fasta -m -any -Ov -o ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf
+        if [ $(cat ~{file_label}_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf| grep -v "#" | wc -l) -eq 0 ]; then
+            echo "false" > annotate.txt
+        else
+            echo "true" > annotate.txt
+        fi
     >>>
 
     output {
         File raw_hifi_to_reference_alignment_structural_variants = file_label + "_raw_hifi_to_reference_alignment_structural_variants.vcf"
         File raw_hifi_to_reference_alignment_structural_PASS_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_variants.vcf"
         File raw_hifi_to_reference_alignment_structural_PASS_norm_variants = file_label + "_raw_hifi_to_reference_alignment_structural_PASS_norm_variants.vcf"
+        Boolean ann = read_boolean("annotate.txt")
     }
     
     runtime {

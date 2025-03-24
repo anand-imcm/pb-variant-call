@@ -27,6 +27,7 @@ task PhaseVariants {
         # Check if the output of samtools view command has any lines
         if [ $(zcat ~{vcf}| grep -v "#" | wc -l) -eq 0 ]; then
             touch ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
+            echo "false" > annotate.txt
         else
             # phasing
             whatshap phase \
@@ -40,12 +41,14 @@ task PhaseVariants {
             whatshap stats \
                 ~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf \
                 --tsv=~{file_label}_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt
+            echo "true" > annotate.txt
         fi
     >>>
 
     output {
         File raw_hifi_to_reference_alignment_PASS_norm_phased_variants = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_variants.vcf"
         File raw_hifi_to_reference_alignment_PASS_norm_phased_stats = file_label + "_raw_hifi_to_reference_alignment_PASS_norm_phased_stats.txt"
+        Boolean ann = read_boolean("annotate.txt")
     }
 
     runtime {
