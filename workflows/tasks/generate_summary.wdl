@@ -16,7 +16,7 @@ task Summary {
         Int cpu = 16
     }
 
-    Int disk_size_gb = ceil(size([vcf, vcfSV, raw_hifi_to_reference_alignment_log], "GB")) * 2
+    Int disk_size_gb = ceil(size([vcf, vcfSV, raw_hifi_to_reference_alignment_log], "GB")) * 3
 
     command <<<
         set -euo pipefail

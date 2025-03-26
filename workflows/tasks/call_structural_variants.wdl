@@ -12,7 +12,7 @@ task CallStructuralVariants {
         Int cpu = 16
     }
 
-    Int disk_size_gb = ceil(size([raw_hifi_to_reference_alignment_bam, genome_reference], "GB")) * 2
+    Int disk_size_gb = ceil(size([raw_hifi_to_reference_alignment_bam, genome_reference], "GB")) * 3
 
     command <<<
         set -euo pipefail

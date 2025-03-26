@@ -12,7 +12,7 @@ task AlignHifiReads {
     }  
 
     String log_level = "DEBUG"
-    Int disk_size_gb = ceil(size([hifi_reads_fastq_gz, pbmm2_index], "GB")) * 2
+    Int disk_size_gb = ceil(size([hifi_reads_fastq_gz, pbmm2_index], "GB")) * 3
 
     command <<<
         set -euo pipefail
