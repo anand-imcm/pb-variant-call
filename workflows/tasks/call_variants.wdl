@@ -33,6 +33,7 @@ task CallVariants {
             /opt/deepvariant/bin/run_deepvariant \
                 --model_type PACBIO \
                 --vcf_stats_report=true \
+                --call_variants_extra_args="allow_empty_examples=true" \
                 --num_shards $(nproc) \
                 --ref genome_reference.fasta \
                 --reads ~{file_label}_raw_hifi_to_reference_alignment.bam \
